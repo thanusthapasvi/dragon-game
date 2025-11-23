@@ -23,23 +23,25 @@
 			<div>Legendary: <span class="score legendary">0</span></div>
 			<div>Mythic: <span class="score mythic">0</span></div>
 		</div>
-		<div class="game soft-border flex flex-align flex-justify flex-column">
-			<div class="box position-relative">
-				<div class="box-1 position-absolute"></div>
-				<div class="box-2 position-absolute"></div>
-				<div class="box-3 position-absolute"></div>
+		<div class="game soft-border position-relative">
+			<div class="game-cover soft-border flex flex-align flex-justify flex-column">
+				<div class="box position-relative">
+					<div class="box-1 position-absolute"></div>
+					<div class="box-2 position-absolute"></div>
+					<div class="box-3 position-absolute"></div>
+				</div>
+				<div class="dot-box position-relative flex flex-align flex-justify soft-border">
+					<div class="dot"></div>
+					<div class="dot"></div>
+					<div class="dot"></div>
+					<div class="dot"></div>
+				</div>
+				<button onclick="luckyBlock()" class="cursor-pointor" id="lucky">Click</button>
 			</div>
-			<div class="dot-box position-relative flex flex-align flex-justify soft-border">
-				<div class="dot"></div>
-				<div class="dot"></div>
-				<div class="dot"></div>
-				<div class="dot"></div>
-			</div>
-			<button onclick="luckyBlock()" class="cursor-pointor" id="lucky">Click</button>
 		</div>
 	</main>
 	<div class="result">
-	    <div class="result-content">
+	    <div class="result-content flex flex-align flex-justify flex-column">
 	        <p class="result-text"></p>
 	        <button class="ok">OK</button>
 	    </div>

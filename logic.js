@@ -20,11 +20,11 @@ function themeToggle() {
 let currentDot = 0;
 let rarity = 0;
 let rarities = [
-    "repeating-linear-gradient(120deg, var(--common) 0%, var(--common) 55px, rgb(25, 25, 25) 65px, rgb(25, 25, 25) 70px)",
-    "repeating-linear-gradient(120deg, var(--rare) 0%, var(--rare) 55px, rgb(25, 25, 25) 65px, rgb(25, 25, 25) 70px)",
-    "repeating-linear-gradient(120deg, var(--epic) 0%, var(--epic) 55px, rgb(25, 25, 25) 65px, rgb(25, 25, 25) 70px)",
-    "repeating-linear-gradient(120deg, var(--legendary) 0%, var(--legendary) 55px, rgb(25, 25, 25) 65px, rgb(25, 25, 25) 70px)",
-    "repeating-linear-gradient(120deg, var(--mythic) 0%, var(--mythic) 55px, rgb(25, 25, 25) 65px, rgb(25, 25, 25) 70px)"
+    "var(--common)",
+    "var(--rare)",
+    "var(--epic)",
+    "var(--legendary)",
+    "var(--mythic)"
 ]
 function luckyBlock() {
     let gameBg = document.querySelector(".game");
