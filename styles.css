@@ -4,6 +4,8 @@
 	--epic: rgb(220, 30, 220);
 	--legendary: rgb(255, 255, 0);
 	--mythic: rgb(230, 20, 20);
+
+	--chest: rgb(150, 100, 0);
 }
 .light {
 	--bg: rgb(120, 120, 200);
@@ -140,36 +142,38 @@ main {
 	width: 300px;
 	height: 300px;
 	background-color: transparent;
-	animation: float 3s ease-out infinite;
+	animation: float 2.5s ease-out infinite;
 }
 @keyframes float {
 	0%, 100% {
 		transform: translateY(0px);
 	}
 	50% {
-		transform: translateY(-20px);
+		transform: translateY(-15px);
 	}
 }
 .box-1, .box-2, .box-3 {
 	width: 150px;
 	height: 150px;
-	background: radial-gradient(circle at 50% 50%, white 10%, green 20%, violet 30%, gold 50%, indianred 70%);
-	border: 2px solid black;
+	background: repeating-linear-gradient(0deg, var(--chest) 0%, var(--chest) 10px, var(--button-bg) 12px, var(--button-bg) 15px);
+	border: 10px solid gold;
 	transition: all 0.3s ease;
 }
 .box-1 {
+	width: 200px;
 	top: 40%;
 	left: 0;
 	transform: skewY(30deg);
 }
 .box-2 {
-	top: 40%;
-	right: 0;
+	top: 45%;
+	right: -15%;
 	transform: skewY(-30deg);
 }
 .box-3 {
-	top: 0;
-	left: 25%;
+	height: 200px;
+	top: -7%;
+	left: 30%;
 	transform: rotate(-28deg) scaleX(1.17) skew(30deg);
 }
 .dot-box {
@@ -247,7 +251,7 @@ main {
 
 .result-content {
 	min-width: 280px;
-	min-height: 250px;
+	min-height: 200px;
     background: var(--bg);
     padding: 2rem;
     border-radius: 12px;
@@ -289,6 +293,12 @@ main {
 	.box-1, .box-2, .box-3 {
 		width: 100px;
 		height: 100px;
+	}
+	.box-1 {
+		width: 133px;
+	}
+	.box-3 {
+		height: 133px;
 	}
 	.score-box, .score {
 		font-size: 0.9rem;
