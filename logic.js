@@ -29,7 +29,7 @@ let rarities = [
 function luckyBlock() {
     let gameBg = document.querySelector(".game");
     const dots = document.querySelectorAll(".dot");
-    const luckB = document.querySelector("#lucky");
+    const openText = document.querySelector(".open-text");
     if(currentDot < dots.length) {
         let luck = Math.random() < 0.5;
         console.log(luck);
@@ -47,7 +47,7 @@ function luckyBlock() {
         luckResult(rarity);
         rarity = 0;
         currentDot = 0;
-        luckB.innerText = "Click";
+        openText.style.display = "none";
         gameBg.style.background = rarities[0];
         for(let i = 0; i < dots.length; i++) {
             dots[i].classList.remove("dot-used");
@@ -55,7 +55,7 @@ function luckyBlock() {
     }
     if(currentDot == dots.length) {
         console.log("text");
-        luckB.innerText = "click to open";
+        openText.style.display = "block";
     }
 }
 function boxAni() {
