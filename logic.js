@@ -180,6 +180,7 @@ function update(location) {
   heroHealth.style.display = "none";
   inventoryWindow.style.display = "none";
   heroImage.style.display = "none";
+  monsterImage.style.display = "none";
   game.style.background = location["bg"];
   if(location.name == "shop") {
     shopWindow.style.display = "flex";
