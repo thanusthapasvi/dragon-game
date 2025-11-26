@@ -27,6 +27,9 @@ let currentWeapon = 0;
 let fighting;
 let monsterHealth;
 
+let isHeroOpen = false;
+let isInventoryOpen = false;
+
 const game = document.querySelector(".game-window");
 const dialog = document.querySelector(".dialog");
 const inventoryWindow = document.querySelector(".inventory-box");
@@ -181,6 +184,8 @@ button2.onclick = goCave;
 button3.onclick = fightDragon;
 
 function update(location) {
+  isHeroOpen = false;
+  isInventoryOpen = false;
   monsterStats.style.display = "none";
   heroHealth.style.display = "none";
   inventoryWindow.style.display = "none";
@@ -230,8 +235,8 @@ function fightDragon() {
     fighting = 3;
     goFight();
 }
-let isInventoryOpen = false;
 function openInventory() {
+    goTown();
     updateInventory();
     if(isInventoryOpen) {
         inventoryWindow.style.display = "none";
@@ -243,9 +248,9 @@ function openInventory() {
         dialog.style.display = "none";
     }
 }
-let isHeroOpen = false;
 let heroFirst = true;
 function openHero() {
+    goTown();
     updateHero();
     if(isHeroOpen) {
         heroWindow.style.display = "none";
