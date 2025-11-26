@@ -1,11 +1,19 @@
 :root {
+	--accent: rgb(120, 120, 200);
+	--accent-2: rgb(180, 50, 180);
+	--accent-text: rgb(50, 50, 255);
 	--common: rgb(220, 220, 220);
 	--rare: rgb(30, 220, 30);
 	--epic: rgb(220, 30, 220);
 	--legendary: rgb(255, 255, 0);
 	--mythic: rgb(230, 20, 20);
-
 	--chest: rgb(150, 100, 0);
+	--gold: #FFD700;
+	--dot-c1: rgba(25, 25, 100, 0.3);
+	--dot-c2: rgba(25, 25, 100, 0.9);
+
+	--bars-height: 3.5rem;
+	--dialog-bg: rgba(0, 0, 0, 0.4);
 }
 .light {
 	--bg: rgb(120, 120, 200);
@@ -13,9 +21,7 @@
 	--button-bg: rgb(10, 10, 10);
 	--text: black;
 	--main-bg: rgb(100, 100, 150);
-	--text-bg: rgba(230, 230, 230, 0.5);
-	--dot-c1: rgba(25, 25, 100, 0.3);
-	--dot-c2: rgba(25, 25, 100, 0.9);
+	--text-bg: rgba(230, 230, 230, 0.7);
 }
 .dark {
 	--bg: rgb(50, 50, 120);
@@ -23,15 +29,17 @@
 	--button-bg: rgb(80, 80, 80);
 	--text: white;
 	--main-bg: rgb(10, 10, 80);
-	--text-bg: rgba(10, 10, 10, 0.5);
-	--dot-c1: rgba(180, 180, 230, 0.3);
-	--dot-c2: rgba(180, 180, 230, 0.9);
+	--text-bg: rgba(10, 10, 10, 0.7);
 }
 .padding-5 {
 	padding: 0.5rem;
 }
 .width100 {
 	width: 100%;
+}
+.width-height-100 {
+	width: 100%;
+	height: 100%;
 }
 .cursor-pointor {
 	cursor: pointer;
@@ -68,7 +76,7 @@
 }
 .soft-border {
 	border-radius: 8px;
-	border: 1px solid var(--text);
+	border: 1px solid var(--gold);
 }
 .transition {
 	transition: all 0.3s ease;
@@ -107,7 +115,253 @@ main {
 	min-width: 380px;
 	margin: 4rem auto 0.5rem auto;
 	background-color: var(--main-bg);
+}
+.game {
+	margin: 0.5rem;
+	padding: 0.5rem;
+	display: flex;
+}
+.game-window {
+	width: 70%;
+	height: 100%;
+	overflow: hidden;
+	background: transparent;
+	background-attachment: scroll !important;
+	background-size: cover !important;
+	background-position: center !important;
+	background-repeat: no-repeat !important;
+	transition: all 0.4s ease-in-out;
+}
+.top-bar, .bottom-bar {
+	left: 0;
+	height: var(--bars-height);
+	background-color: var(--accent);
+	gap: 3rem;
+	z-index: 10;
+}
+.top-bar {
+	top: 0;
+}
+.bottom-bar {
+	bottom: 0;
+}
+.top-buttons, .bottom-buttons {
+	position: relative;
+	cursor: pointer;
+	color: white;
+	transition: all 0.3 ease;
+}
+.top-buttons {
+	padding: 4px;
+	display: flex;
+	background-color: transparent;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.8rem;
+	border: none;
+}
+.bottom-buttons {
+	padding: 6px 8px;
+	font-size: 1.2rem;
+	background: linear-gradient(120deg, var(--accent-2), var(--accent));
+	border: 2px solid var(--gold);
+}
+.top-buttons:hover, .bottom-buttons:hover {
+	transform: scale(1.1);
+	color: var(--accent-text);
+}
+.top-buttons:active, .bottom-buttons:active {
+	transform: scale(0.9);
+	color: var(--accent-2);
+}
+.button-icons {
+	width: 28px;
+	height: 28px;
+}
+.hero-stats {
+	height: 40px;
+	width: clamp(280px, 380px, 480px);
+	top: var(--bars-height);
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 0.5rem 1rem;
+	gap: 1rem;
+	background-color: var(--accent-2);
+	border-bottom: 3px solid var(--accent);
+}
+.hero-stat {
+	color: white;
+	font-size: 1.2rem;
+}
+.xpText, .levelText, .goldText, .healthText {
+	font-weight: bold;
+	font-size: 1.3rem;
+}
+.monster-stats {
+	min-height: 60px;
+	width: clamp(240px, 30%, 320px);
+	top: calc(var(--bars-height) + 40px);
+	right: 0;
+	background-color: var(--accent-text);
+	padding: 0.5rem;
 	gap: 0.5rem;
+	display: none;
+}
+.monster-top {
+	width: 100%;
+	justify-content: space-between;
+	gap: 0.5rem;
+}
+.monster-stat {
+	color: white;
+	font-size: 1rem;
+}
+.monsterName, .monsterLevel {
+	font-weight: bold;
+}
+.hero-health-stat {
+	width: clamp(200px, 30%, 320px);
+	height: 30px;
+	left: 0;
+	padding: 0.5rem;
+	bottom: calc(var(--bars-height) + 90px);
+	background-color: var(--accent-text);
+	display: none;
+}
+.monster-health, .hero-health {
+	width: 100%;
+	height: 16px;
+	background-color: #999;
+	border-radius: 999px;
+	overflow: hidden;
+	border: 2px solid #444;
+}
+.monster-progress, .hero-progress {
+	width: 75%;
+	height: 100%;
+	background-color: #50cc50;
+	border-radius: 999px;
+	transition: width 0.3s ease-out;
+}
+.hero-image, .monster-image {
+	width: clamp(200px, 25%, 300px);
+	height: auto;
+	display: none;
+}
+.hero-image {
+	left: 0;
+	bottom: calc(var(--bars-height) + 120px);
+}
+.monster-image {
+	right: 0;
+	top: calc(var(--bars-height) + 70px);
+}
+.dialog {
+	min-height: 2rem;
+	left: 0;
+	bottom: calc(var(--bars-height) + 0.5rem);
+	background-color: var(--dialog-bg);
+	color: white;
+	font-size: 1.2rem;
+	text-align: center;
+	padding: 0.5rem 2rem;
+}
+.inventory-box {
+	top: calc(var(--bars-height) + 40px + 1rem);
+	left: 50%;
+	width: 360px;
+	height: 360px;
+	transform: translateX(-50%);
+	border-radius: 12px;
+	padding: 1rem;
+	display: none;
+	grid-template-columns: repeat(3, auto);
+	background-color: var(--accent);
+	gap: 1rem;
+}
+.weapons {
+	width: 100px;
+	height: 100px;
+	border-radius: 8px;
+	background-color: var(--accent-2);
+	padding: 8px;
+	overflow: hidden;
+	position: relative;
+}
+.weapon-name {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 2.5rem;
+	padding: 0.4rem;
+	font-size: 1rem;
+	color: white;
+	background-color: rgba(50, 150, 150, 0.5);
+}
+.weapon-quanity {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 1.2rem;
+	height: 1.2rem;
+	font-size: 1rem;
+	color: white;
+	background-color: var(--accent-text);
+	text-align: center;
+}
+.shop-box {
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 360px;
+	height: 150px;
+	padding: 0.5rem;
+	background-color: var(--accent);
+	gap: 1rem;
+	border-radius: 12px;
+	display: none;
+}
+.shop-item {
+	width: 100px;
+	height: 120px;
+	background-color: var(--accent-2);
+	position: relative;
+	padding: 0.5rem;
+	border-radius: 8px;
+	overflow: hidden;
+}
+.shop-item-image {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 100px;
+	height: auto;
+}
+.shop-item-name, .shop-item-price {
+	position: absolute;
+	font-size: 1.1rem;
+	color: white;
+	background-color: var(--accent-text);
+	width: 100px;
+	text-align: center;
+	z-index: 10;
+}
+.shop-item-name {
+	top: 0;
+	left: 0;
+}
+.shop-item-price {
+	left: 0;
+	bottom: 0;
+}
+/* Lucky Block Start*/
+.lucky-box {
+	min-height: 540px;
+	gap: 0.5rem;
+	display: none;
 }
 .score-box {
 	gap: 1rem;
@@ -121,19 +375,18 @@ main {
 	font-weight: bold;
 	color: var(--text);
 }
-.game {
+.lucky-game {
 	width: 80%;
 	height: 90%;
 	min-width: 320px;
-	min-height: 500px;
-	background: var(--common);
+	min-height: 480px;
+	background-color: var(--common);
+	background-image: url('assests/ic_sun.svg');
+	background-repeat: repeat;
 }
-.game-cover {
-	position: absolute;
+.lucky-game-cover {
 	top: 0;
 	left: 0;
-	width: 100%;
-	height: 100%;
 	background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.7) 100%);
 	padding: 1rem;
 	gap: 2rem;
@@ -178,36 +431,34 @@ main {
 }
 .dot-box {
 	gap: 1rem;
-	background-color: rgba(20, 20, 20, 0.3);
+	background-color: transparent;
 	padding: 12px 16px;
 }
 .dot {
 	width: 32px;
 	height: 32px;
 	border-radius: 50%;
-	border: 5px solid var(--text);
+	border: 5px solid black;
 	background: radial-gradient(circle at 50% 50%, var(--dot-c1), var(--dot-c2));
 	transition: all 0.3s ease;
 }
 .dot-used {
 	width: 16px;
 	height: 16px;
-	border: 2px solid var(--text);
+	border: 2px solid black;
 }
 #lucky {
 	max-width: 180px;
 	max-height: 180px;
 	padding: 16px 6px;
-	color: var(--text);
+	color: white;
 	font-size: 1.3rem;
 	border: 5px solid black;
 	box-shadow: -3px 3px black;
-	background: linear-gradient(120deg, var(--bg), var(--main-bg));
+	background-color: var(--accent);
 }
 #lucky:hover {
-	color: white;
-	background: linear-gradient(120deg, var(--header-bg), var(--main-bg));
-	box-shadow: -3px 3px black;
+	transform: scale(1.1);
 }
 #lucky:active {
 	transform: translate(-3px, 3px);
@@ -240,8 +491,6 @@ main {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
     background: rgba(0,0,0,0.7);
     display: none;
     align-items: center;
@@ -269,23 +518,42 @@ main {
 .ok {
     padding: 0.5rem 1rem;
     font-size: 1.2rem;
-    border: 2px solid var(--text);
+    border: 3px solid var(--text);
     border-radius: 6px;
     background: var(--header-bg);
     color: var(--text);
     cursor: pointer;
+    box-shadow: -3px 3px var(--text);
+    transition: all 0.3s ease;
 }
 .ok:active {
-	transform: scale(0.9);
+	box-shadow: 0 0 var(--text);
+	transform: translate(-3px, 3px);
 }
+/* Lucky Block End*/
 
-@media(max-width: 550px) {
-	.score-box, .score {
+
+
+@media(max-width: 750px) {
+	.monster-stat {
+		font-size: 0.95rem;
+	}
+	.game-window {
+		width: 80%;
+	}
+	.bottom-buttons {
 		font-size: 1rem;
 	}
 }
-
-@media(max-width: 450px) {
+@media(max-width: 650px) {
+	.game-window {
+		width: 90%;
+	}
+	.monster-stat {
+		font-size: 0.9rem;
+	}
+}
+@media(max-width: 600px) {
 	.box {
 		width: 200px;
 		height: 200px;
@@ -300,7 +568,35 @@ main {
 	.box-3 {
 		height: 133px;
 	}
+	.dialog {
+		font-size: 1.1rem;
+	}
+	.bottom-buttons {
+		font-size: 0.9rem;
+	}
+}
+@media(max-width: 550px) {
+	.game-window {
+		width: 100%;
+	}
+	.score-box, .score {
+		font-size: 1rem;
+	}
+	.dialog {
+		font-size: 1rem;
+	}
+}
+@media(max-width: 480px) {
 	.score-box, .score {
 		font-size: 0.9rem;
+	}
+	.dialog {
+		font-size: 1rem;
+	}
+	.monster-stat {
+		font-size: 0.8rem;
+	}
+	.bottom-buttons {
+		font-size: 0.8rem;
 	}
 }

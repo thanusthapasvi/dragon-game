@@ -16,34 +16,124 @@
 		</button>
 	</header>
 	<main class="soft-border flex flex-align flex-justify flex-column">
-		<div class="score-box flex flex-align flex-justify soft-border">
-			<div>Common: <span class="score common">0</span></div>
-			<div>Rare: <span class="score rare">0</span></div>
-			<div>Epic: <span class="score epic">0</span></div>
-			<div>Legendary: <span class="score legendary">0</span></div>
-			<div>Mythic: <span class="score mythic">0</span></div>
+		<div class="game width-height-100 flex-align flex-justify flex-column">
+			<div class="game-window flex flex-align flex-justify flex-column position-relative">
+				<img src="assests/hero.png" aria-label="hero" class="hero-image position-absolute" />
+				<img src="assests/beast1.png" aria-label="monster" class="monster-image position-absolute" />
+				<div class="shop-box position-absolute flex-align flex-justify">
+					<div class="shop-item">
+						<p class="shop-item-name">Health +10</p>
+						<img src="assests/health.png" aria-label="health" class="shop-item-image" />
+						<p class="shop-item-price">10 gold</p>
+					</div>
+					<div class="shop-item">
+						<p class="shop-item-name">Dagger</p>
+						<img src="assests/dagger.png" aria-label="dagger" class="shop-item-image"/>
+						<p class="shop-item-price">30 gold</p>
+					</div>
+					<div class="shop-item">
+						<p class="shop-item-name">Lucky Crate</p>
+						<img src="assests/lucky.png" aria-label="lucky crate" class="shop-item-image"/>
+						<p class="shop-item-price">??? gold</p>
+					</div>
+				</div>
+				<div class="top-bar width100 flex flex-align flex-justify position-absolute">
+					<button class="top-buttons top-button1">
+						<img src="assests/ic_back.svg" aria-label="back button" class="button-icons" />
+						Back
+					</button>
+					<button class="top-buttons top-button2">
+						<img src="assests/ic_inventory.svg" aria-label="back button" class="button-icons" />
+						Inventory
+						<div class="inventory position-absolute"></div>
+					</button>
+					<button class="top-buttons top-button3">
+						<img src="assests/ic_hero.svg" aria-label="back button" class="button-icons" />
+						Hero
+					</button>
+				</div>
+				<div class="in-game flex width-height-100 position-relative">
+					<div class="inventory-box position-absolute">
+						<div class="weapons">
+							<p class="weapon-name">Stick</p>
+							<p class="weapon-quanity weapon1-quanity">1</p>
+						</div>
+						<div class="weapons">
+							<p class="weapon-name">Dagger</p>
+							<p class="weapon-quanity weapon2-quanity">0</p>
+						</div>
+						<div class="weapons">
+							<p class="weapon-name">Hammer</p>
+							<p class="weapon-quanity weapon3-quanity">0</p>
+						</div>
+						<div class="weapons">
+							<p class="weapon-name">Iron Sword</p>
+							<p class="weapon-quanity weapon4-quanity">0</p>
+						</div>
+						<div class="weapons">
+							<p class="weapon-name">Diamond Sword</p>
+							<p class="weapon-quanity weapon5-quanity">0</p>
+						</div>
+					</div>
+					<div class="monster-stats flex-align flex-column flex-justify position-absolute">
+						<div class="monster-top flex flex-align">
+							<p class="monster-stat">Monster Name: <span class="monsterName">Slime Group</span></p>
+							<p class="monster-stat">level: <span class="monsterLevel">1</span></p>
+						</div>
+						<div class="monster-health position-relative">
+							<div class="monster-progress"></div>
+						</div>
+					</div>
+					<div class="hero-health-stat position-absolute flex-align flex-justify">
+						<div class="hero-health">
+							<div class="hero-progress"></div>
+						</div>
+					</div>
+					<div class="hero-stats flex flex-align flex-justify position-absolute">
+						<p class="hero-stat">XP: <span class="xpText">0</span></p>
+						<p class="hero-stat">Level: <span class="levelText">1</span></p>
+						<p class="hero-stat">Gold: <span class="goldText">50</span></p>
+						<p class="hero-stat">Health: <span class="healthText">100</span></p>
+					</div>
+					<p class="dialog position-absolute width100">Welcome to Dragon Repeller. You must defeat the dragon that is preventing people from leaving the town. Use the buttons above to go somewhere.</p>
+				</div>
+				<div class="bottom-bar width100 flex flex-align flex-justify position-absolute">
+					<button class="bottom-buttons bottom-button1">Shop</button>
+					<button class="bottom-buttons bottom-button2">Cave</button>
+					<button class="bottom-buttons bottom-button3">Dragon</button>
+				</div>
+			</div>
 		</div>
-		<div class="game soft-border position-relative">
-			<div class="game-cover soft-border flex flex-align flex-justify flex-column">
-				<div class="box position-relative">
-					<div class="box-1 position-absolute"></div>
-					<div class="box-2 position-absolute"></div>
-					<div class="box-3 position-absolute"></div>
+		<div class="lucky-box width-height-100 flex-align flex-justify flex-column">
+			<div class="score-box flex flex-align flex-justify soft-border">
+				<div>Common: <span class="score common">0</span></div>
+				<div>Rare: <span class="score rare">0</span></div>
+				<div>Epic: <span class="score epic">0</span></div>
+				<div>Legendary: <span class="score legendary">0</span></div>
+				<div>Mythic: <span class="score mythic">0</span></div>
+			</div>
+			<div class="lucky-game soft-border position-relative">
+				<div class="lucky-game-cover width-height-100 soft-border flex flex-align flex-justify flex-column position-absolute">
+					<div class="box position-relative">
+						<div class="box-1 position-absolute"></div>
+						<div class="box-2 position-absolute"></div>
+						<div class="box-3 position-absolute"></div>
+					</div>
+					<div class="dot-box flex flex-align flex-justify">
+						<div class="dot"></div>
+						<div class="dot"></div>
+						<div class="dot"></div>
+						<div class="dot"></div>
+					</div>
+					<button onclick="luckyBlock()" class="cursor-pointor border-circle position-relative" id="lucky">
+						Click
+						<div class="open-text position-absolute">Click to Open</div>
+					</button>
 				</div>
-				<div class="dot-box position-relative flex flex-align flex-justify soft-border">
-					<div class="dot"></div>
-					<div class="dot"></div>
-					<div class="dot"></div>
-					<div class="dot"></div>
-				</div>
-				<button onclick="luckyBlock()" class="cursor-pointor border-circle position-relative" id="lucky">
-					Click
-					<div class="open-text position-absolute">Click to Open</div>
-				</button>
 			</div>
 		</div>
 	</main>
-	<div class="result">
+	<div class="result width-height-100">
 	    <div class="result-content flex flex-align flex-justify flex-column">
 	        <p class="result-text"></p>
 	        <button class="ok">OK</button>
