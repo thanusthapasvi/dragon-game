@@ -43,7 +43,7 @@ scene.add(light2);
 const loader = new THREE.GLTFLoader();
 
 let gift, lid, bottom;
-loader.load("models/gift box.glb", function (gltf) {
+loader.load("models/GiftBox.glb", function (gltf) {
     gift = gltf.scene;
     scene.add(gift);
     gift.scale.set(1.5, 1.5, 1.5);
@@ -389,7 +389,7 @@ function buyLucky() {
             renderer.setSize(w, h);
             camera.aspect = w / h;
             camera.updateProjectionMatrix();
-        }, 50);
+        }, 200);
     } else {
         dialog.innerText = "You dont have enough gold";
     }
