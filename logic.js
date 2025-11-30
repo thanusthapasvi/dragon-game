@@ -357,6 +357,7 @@ function update(location) {
     heroWindow.style.display = "none";
     heroImage.style.display = "none";
     monsterImage.style.display = "none";
+    monsterContainer.style.display = "none";
     dialog.style.display = "block";
     game.style.background = location["bg"];
     if (location.name == "shop") {
