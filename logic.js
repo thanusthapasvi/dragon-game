@@ -29,15 +29,15 @@ const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 const loader = new THREE.GLTFLoader();
 /* using renderer.setSize() in functions for reuse. */
 
-const light = new THREE.DirectionalLight(0xffffff, 1);
-light.position.set(2, 2, 4);
+const light = new THREE.DirectionalLight(0xffffff, 0.5);
+light.position.set(-0.5, -0.5, 2);
 scene.add(light);
 
-const light2 = new THREE.DirectionalLight(0xffffff, 1);
-light2.position.set(0.5, 1, 0);
+const light2 = new THREE.DirectionalLight(0xffffff, 0.5);
+light2.position.set(0.5, 0.5, 2);
 scene.add(light2);
 
-scene.add(new THREE.AmbientLight(0xffffff, 1));
+scene.add(new THREE.AmbientLight(0xffffff, 0.5));
 
 /* Camera and attaching to conatineer (gift) or Monster container */
 let activeCamera;
@@ -47,7 +47,7 @@ let giftCamera = new THREE.PerspectiveCamera(60, 1, 0.1, 1000);
 giftCamera.position.set(0.75, 0.75, 1.5);
 
 let monsterCamera = new THREE.PerspectiveCamera(60, 1, 0.1, 1000);
-monsterCamera.position.set(0.2, 0.5, 1.5);
+monsterCamera.position.set(0.2, 0.2, 1.5);
 
 
 function initCameraForContainer(camera, container) {
@@ -224,18 +224,18 @@ const monsters = [
         level: 2,
         health: 20,
         image: "assests/slime.png",
-        scaleX: 0.8,
-        scaleY: 0.6,
-        scaleZ: 0.75
+        scaleX: 0.7,
+        scaleY: 0.5,
+        scaleZ: 0.5
     },
     {
         name: "slime group",
         level: 6,
         health: 60,
         image: "assests/slimeGroup.png",
-        scaleX: 0.8,
-        scaleY: 0.6,
-        scaleZ: 0.75
+        scaleX: 0.4,
+        scaleY: 0.4,
+        scaleZ: 0.2
     },
     {
         name: "beast",
