@@ -732,3 +732,20 @@ function luckResult(rarity) {
     }
 }
 /* Lucky Block End*/
+
+/* functions for direct div in shop etc */
+const shopItems = document.querySelectorAll('.shop-item');
+shopItems[0].onclick = buyHealth;
+shopItems[1].onclick = buyWeapon;
+shopItems[2].onclick = buyLucky;
+
+
+/* Animations and Visuals */
+document.querySelectorAll('.top-buttons, .bottom-buttons')
+.forEach(btn => {
+    btn.addEventListener('click', () => {
+        btn.classList.remove('bounce-animation');
+        void btn.offsetWidth;
+        btn.classList.add('bounce-animation');
+    });
+});

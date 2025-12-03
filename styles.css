@@ -81,6 +81,24 @@
 .transition {
 	transition: all 0.3s ease;
 }
+.bounce-animation {
+	animation: bounce 0.3s ease;
+}
+@keyframes bounce {
+	0% {
+		transform: scale(0.9);
+		color: var(--gold);
+	}
+	50% {
+		transform: scale(1.1);
+		color: var(--gold);
+	}
+	100% {
+		transform: scale(1);
+		color: var(--gold);
+	}
+}
+
 * {
 	margin: 0;
 	padding: 0;
@@ -149,7 +167,7 @@ main {
 	position: relative;
 	cursor: pointer;
 	color: white;
-	transition: all 0.3 ease;
+	transition: all 0.5s ease;
 	transform: scale(1);
 }
 .top-buttons {
@@ -162,16 +180,16 @@ main {
 	font-size: 0.8rem;
 	border: none;
 }
+
+.bottom-button-cover {
+	padding: 3px;
+	border: 2px solid transparent;
+}
 .bottom-buttons {
 	padding: 6px 8px;
 	font-size: 1.2rem;
-	background: linear-gradient(120deg, var(--accent-2), var(--accent));
-	border: 2px solid var(--gold);
-}
-
-.top-buttons:active, .bottom-buttons:active {
-	transform: scale(0.9);
-	color: var(--gold);
+	background: linear-gradient(to bottom, var(--accent-2) 60%, var(--accent-text) 90%);
+	border: none;
 }
 .button-icons {
 	width: 28px;
@@ -475,6 +493,7 @@ main {
 	position: relative;
 	padding: 0.5rem;
 	border-radius: 8px;
+	cursor: pointer;
 	overflow: hidden;
 }
 .shop-item-image {
@@ -711,8 +730,13 @@ main {
 	#lucky:hover {
 		transform: scale(1.1);
 	}
-	.top-buttons:hover, .bottom-buttons:hover {
-		transform: scale(1.1);
+	.bottom-button-cover:hover {
+		border: 2px solid var(--gold);
+	}
+	.top-buttons:hover {
 		color: var(--accent-text);
+	}
+	.top-buttons:hover:active {
+		color: var(--gold);
 	}
 }
