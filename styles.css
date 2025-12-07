@@ -384,7 +384,7 @@ main {
 .hero-profile {
 	top: calc(var(--bars-height) + 40px + 1rem);
 	left: 50%;
-	width: 360px;
+	width: 340px;
 	height: 300px;
 	transform: translateX(-50%);
 	border-radius: 12px;
