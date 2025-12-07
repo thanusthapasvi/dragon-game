@@ -14,22 +14,13 @@
 
 	--bars-height: 3.5rem;
 	--dialog-bg: rgba(0, 0, 0, 0.4);
-}
-.light {
+
 	--bg: rgb(120, 120, 200);
 	--header-bg: rgb(150, 150, 255);
 	--button-bg: rgb(10, 10, 10);
 	--text: black;
 	--main-bg: rgb(100, 100, 150);
 	--text-bg: rgba(230, 230, 230, 0.7);
-}
-.dark {
-	--bg: rgb(50, 50, 120);
-	--header-bg: rgb(20, 20, 100);
-	--button-bg: rgb(80, 80, 80);
-	--text: white;
-	--main-bg: rgb(10, 10, 80);
-	--text-bg: rgba(10, 10, 10, 0.7);
 }
 .padding-5 {
 	padding: 0.5rem;
@@ -71,9 +62,6 @@
 .shadow-down {
 	box-shadow: 0 1px var(--text);
 }
-.smooth-shadow-around {
-	box-shadow: 0 0 6px 1px black;
-}
 .soft-border {
 	border-radius: 8px;
 	border: 1px solid var(--gold);
@@ -84,8 +72,64 @@
 .bounce-animation {
 	animation: bounce 0.3s ease;
 }
+.active-tab {
+	position: relative;
+}
+.active-tab::after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	width: 100%;
+	height: 3px;
+	background-color: var(--gold);
+	border-radius: 4px;
+	animation: border-appear 0.3s ease;
+	transform: translateX(-50%);
+}
+@keyframes border-appear {
+	from {
+		width: 0%;
+	}
+	to {
+		width: 100%;
+	}
+}
+@property --angle {
+	syntax: "<angle>";
+	initial-value: 0deg;
+	inherits: false;
+}
+.current-weapon-highlight {
+	position: relative;
+}
+.current-weapon-highlight::after, .current-weapon-highlight::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: calc(100% + 6px);
+	height: calc(100% + 6px);
+	transform: translate(-3px, -3px);
+	border-radius: 8px;
+	animation: bgRotate 1s linear infinite;
+	background: conic-gradient(from var(--angle) at 50% 50%, var(--gold) 0%, var(--gold) 5%, transparent 10%, transparent 40%, var(--gold) 45%, var(--gold) 55%, transparent 60%, transparent 90%, var(--gold) 95%);;
+	z-index: -1;
+}
+.current-weapon-highlight::before {
+	filter: blur(10px);
+	opacity: 0.6;
+}
+.appear {
+	animation: appear 0.3s ease;
+}
+
 @keyframes bounce {
-	0% {
+	0%, 100% {
+		transform: scale(1);
+		color: var(--gold);
+	}
+	25% {
 		transform: scale(0.9);
 		color: var(--gold);
 	}
@@ -93,9 +137,24 @@
 		transform: scale(1.1);
 		color: var(--gold);
 	}
-	100% {
-		transform: scale(1);
-		color: var(--gold);
+	
+}
+@keyframes bgRotate {
+	from {
+		--angle: 0deg;
+	}
+	to {
+		--angle: 360deg;
+	}
+}
+@keyframes appear {
+	from {
+		transform: scale(0.5) translateY(2rem);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1) translateY(0rem);
+		opacity: 1;
 	}
 }
 
@@ -116,16 +175,6 @@ header {
 	left: 0;
 	background-color: var(--header-bg);
 	justify-content: space-between;
-}
-.themeButton {
-	padding: 6px;
-	border: none;
-	background-color: var(--button-bg);
-	color: #ffffff;
-	transition: transform 0.3s ease;
-}
-.themeButton:hover {
-	transform: scale(1.1);
 }
 main {
 	width: calc(100% - 2rem);
@@ -398,23 +447,26 @@ main {
 	position: relative;
 	border-bottom: 3px solid var(--gold);
 }
-.inventory-info-mark {
+/* for ? in inventory and game */
+.inventory-info-mark, .game-info-mark {
 	position: absolute;
 	right: 0.5rem;
 	top: 50%;
 	font-size: 16px;
+	color: white;
 	transform: translateY(-50%);
-	background-color: var(--accent);
 	padding: 3px 8px;
 	border-radius: 50%;
 	cursor: pointer;
 }
-.inventory-info-text {
+.inventory-info-mark {
+	background-color: var(--accent);
+}
+.game-info-mark {
+	background-color: var(--accent-2);
+}
+.inventory-info-text, .game-info-text {
 	position: absolute;
-	width: 100%;
-	top: 2rem;
-	left: 50%;
-	transform: translateX(-50%);
 	background-color: rgba(0, 0, 0, 0.5);
 	font-size: 1rem;
 	padding: 0.5rem;
@@ -423,7 +475,20 @@ main {
 	display: none;
 	z-index: 10;
 }
-.inventory-info-mark:hover + .inventory-info-text {
+.inventory-info-text {
+	width: 100%;
+	top: 2rem;
+	left: 50%;
+	transform: translateX(-50%);
+}
+.game-info-text {
+	width: 250px;
+	height: clamp(200px, auto, 400px);
+	top: 1rem;
+	right: 2rem;
+	overflow-y: auto;
+}
+.inventory-info-mark:hover + .inventory-info-text, .game-info-mark:hover + .game-info-text {
 	display: block;
 }
 
@@ -447,9 +512,7 @@ main {
 	border-radius: 8px;
 	background-color: var(--accent-2);
 	padding: 8px;
-	overflow: hidden;
 	position: relative;
-	border-bottom: 3px solid var(--gold);
 }
 
 .weapon-name {

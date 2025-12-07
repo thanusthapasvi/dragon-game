@@ -1,21 +1,3 @@
-let body = document.querySelector('body');
-let theme = document.querySelector('.themeButton');
-let themeIcon = document.querySelector('#theme-icon path');
-const moon = "M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z";
-const sun = "M480-360q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Zm0 80q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Zm326-268Z";
-const currentD = themeIcon.getAttribute('d');
-
-function themeToggle() {
-    body.classList.toggle('dark');
-    body.classList.toggle('light');
-    if (body.classList.contains('dark')) {
-        themeIcon.setAttribute('d', sun);
-        theme.style.color = "#ffff00";
-    } else {
-        themeIcon.setAttribute('d', moon);
-        theme.style.color = "#ffffff";
-    }
-}
 /* 3D Objects containers */
 /* Lucky Box */
 const giftContainer = document.querySelector(".box");
@@ -194,7 +176,6 @@ const heroWindow = document.querySelector(".hero-profile");
 const heroLevelText = document.querySelector(".info-level");
 const heroWeaponText = document.querySelector(".info-weapon");
 
-
 const back = document.querySelector('.top-button1');
 const bag = document.querySelector('.top-button2');
 const hero = document.querySelector('.top-button3');
@@ -344,9 +325,7 @@ function bestWeapon() {
     return best;
 }
 currentWeapon = bestWeapon();
-hero.onclick = openHero;
 back.onclick = goTown;
-bag.onclick = openInventory;
 button1.onclick = goShop;
 button2.onclick = goCave;
 button3.onclick = fightDragon;
@@ -364,6 +343,8 @@ function update(location) {
     heroDamageText.style.display = "none";
     monsterDamageText.style.display = "none";
     dialog.style.display = "block";
+    hero.classList.remove('active-tab');
+    bag.classList.remove('active-tab');
     game.style.background = location["bg"];
     if (location.name == "shop") {
         shopWindow.style.display = "flex";
@@ -412,11 +393,13 @@ function openInventory() {
     updateInventory();
     if (isInventoryOpen) {
         inventoryWindow.style.display = "none";
+        bag.classList.remove('active-tab');
         isInventoryOpen = false;
         dialog.style.display = "block";
     } else {
         inventoryWindow.style.display = "flex";
         isInventoryOpen = true;
+        bag.classList.add('active-tab');
         dialog.style.display = "none";
     }
 }
@@ -426,17 +409,19 @@ function openHero() {
     updateHero();
     if (isHeroOpen) {
         heroWindow.style.display = "none";
+        hero.classList.remove('active-tab');
         isHeroOpen = false;
         dialog.style.display = "block";
     } else {
         heroWindow.style.display = "flex";
+        hero.classList.add('active-tab');
         isHeroOpen = true;
         if (!heroFirst)
             dialog.style.display = "none";
     }
     heroFirst = false
 }
-openHero();
+openHero(); //to open when game starts
 function updateInventory() {
     const stickText = document.querySelector(".weapon1-quanity");
     const daggerText = document.querySelector(".weapon2-quanity");
@@ -444,11 +429,20 @@ function updateInventory() {
     const ironSwordText = document.querySelector(".weapon4-quanity");
     const diamondSwordText = document.querySelector(".weapon5-quanity");
 
+    const weaponHighlight = document.querySelectorAll(".weapons");
+
     stickText.innerText = inventory[0].quantity;
     daggerText.innerText = inventory[1].quantity;
     hammerText.innerText = inventory[2].quantity;
     ironSwordText.innerText = inventory[3].quantity;
     diamondSwordText.innerText = inventory[4].quantity;
+
+    weaponHighlight[currentWeapon].classList.add("current-weapon-highlight");
+    for (let i = 0; i < weaponHighlight.length; i++) {
+        if (i != currentWeapon) {
+            weaponHighlight[i].classList.remove("current-weapon-highlight");
+        }
+    }
 }
 function updateHero() {
     updateLevel();
@@ -672,7 +666,6 @@ function restart() {
     goTown();
 }
 
-
 /* Lucky Block Start*/
 let currentDot = 0;
 let rarity = 0;
@@ -741,7 +734,7 @@ shopItems[2].onclick = buyLucky;
 
 
 /* Animations and Visuals */
-document.querySelectorAll('.top-buttons, .bottom-buttons')
+document.querySelectorAll('.top-buttons, .bottom-buttons, .shop-item')
 .forEach(btn => {
     btn.addEventListener('click', () => {
         btn.classList.remove('bounce-animation');
