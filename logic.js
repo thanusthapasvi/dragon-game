@@ -715,7 +715,7 @@ function updateLevel() {
     let xpForNextLevel = levelXp[level] - levelXp[level - 1];
     let currentXpInLevel = xp - levelXp[level - 1];
     let xpPercent = (currentXpInLevel / xpForNextLevel) * 100;
-    xpProgressBar.style.background = `linear-gradient(to right, var(--gold) 0%, var(--gold) ${xpPercent}%, var(--accent-text) ${xpPercent}%, var(--accent-text) 100%)`;
+    xpProgressBar.style.background = `linear-gradient(to right, var(--gold) 0%, var(--gold) ${xpPercent}%, var(--dialog-bg) ${xpPercent}%, var(--dialog-bg) 100%)`;
     levelText.innerText = level;
     heroLevelText.innerText = level;
 }

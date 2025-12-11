@@ -171,9 +171,23 @@ body {
 	background-color: var(--bg);
 	overflow: hidden;
 	user-select: none;
+	min-width: 380px;
 }
 h1 {
-	color: var(--text);
+	font-size: clamp(1.5rem, 10vw, 40px);
+	color: transparent;
+	background: linear-gradient(90deg, var(--accent-2), var(--gold), var(--accent-2));
+	background-clip: text;
+	animation: bgFlow 3s linear infinite;
+	background-size: 500% 100%;
+}
+@keyframes bgFlow {
+	0% {
+		background-position: 0% 0%;
+	}
+	100% {
+		background-position: 100% 0%;
+	}
 }
 header {
 	height: 3.5rem;
@@ -241,9 +255,10 @@ main {
 .bottom-buttons {
 	padding: 0.5rem;
 	font-size: clamp(14px, 1.2rem, 20px);
-	background: linear-gradient(to bottom, var(--accent-2) 60%, var(--accent-text) 90%);
 	border: none;
 	transition: all 0.2s ease;
+	background: radial-gradient(circle at top, var(--accent-text), var(--accent-2) 60%);
+	box-shadow: 0 3px 6px var(--accent-text), 3px 3px 6px var(--accent-2), -3px 0 6px var(--accent-2);
 }
 
 .button-icons {
@@ -253,34 +268,18 @@ main {
 .hero-stats {
 	height: 40px;
 	width: clamp(360px, 75%, 400px);
-	top: calc(var(--bars-height) + 0.6rem);
+	top: calc(var(--bars-height) + 0.5rem);
 	left: 50%;
 	transform: translateX(-50%);
-	padding: 0.5rem 1rem;
-	gap: 1rem;
-	background-color: var(--accent-2);
-}
-.xp-progress-bar {
-	position: absolute;
-	left: 0;
-	bottom: -2px;
-	width: 100%;
-	height: 3px;
-	background: linear-gradient(to right, var(--gold) 0%, var(--gold) 75%, var(--accent-text) 75%, var(--accent-text) 100%);
-	overflow: hidden;
-}
-.hero-stat {
-	color: white;
-	font-size: 1.2rem;
-}
-.xpText, .levelText, .goldText, .healthText {
-	font-weight: bold;
-	font-size: 1.3rem;
+	padding: 0.5rem;
+	justify-content: center;
+	gap: 4.5rem;
+	background-color: transparent;
 }
 .monster-stats {
 	min-height: 60px;
 	width: clamp(240px, 30%, 320px);
-	top: calc(var(--bars-height) + 40px);
+	top: calc(var(--bars-height) + 1rem);
 	right: 0;
 	background-color: var(--accent-text);
 	padding: 0.5rem;
@@ -304,7 +303,7 @@ main {
 	height: 30px;
 	left: 0;
 	padding: 0.5rem;
-	bottom: calc(var(--bars-height) + 90px);
+	bottom: calc(var(--bars-height) + 3rem);
 	background-color: var(--accent-text);
 	display: none;
 }
@@ -374,14 +373,15 @@ main {
 	width: clamp(200px, 25%, 300px);
 	height: auto;
 	display: none;
+	bottom: 8.5rem;
 }
 .hero-image {
 	left: 0;
-	bottom: calc(var(--bars-height) + 120px);
+	bottom: 8.5rem;
 }
 .monster-image {
 	right: 0;
-	top: calc(var(--bars-height) + 80px);
+	top: 8.5rem;
 }
 .dialog {
 	width: clamp(360px, 75%, 1200px);
@@ -728,6 +728,71 @@ main {
 }
 /* Lucky Block End*/
 
+/* Game Elements */
+.xpText, .goldText, .healthText {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-weight: bold;
+	font-size: 1.2rem;
+	color: white;
+	-webkit-text-stroke: 0.2px black;
+	text-shadow: 1px 1px 3px black;
+}
+.xp-progress-bar {
+	background: linear-gradient(to right, var(--gold) 0%, var(--gold) 75%, var(--dialog-bg) 75%, var(--dialog-bg) 100%);
+	overflow: hidden;
+}
+.coin-icon, .xp-icon, .health-icon {
+	font-size: 1.4rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: bolder;
+}
+.coin-icon {
+	width: 2rem;
+	height: 2rem;
+	border: 4px solid #FFd934;
+	border-radius: 50%;
+	background: radial-gradient(circle at center, #EAC934, #AA9911);
+	color: #FFd934;
+	box-shadow: -2px 0px 0px -0.2px #BBA912;
+}
+.xp-icon {
+	width: 2rem;
+	height: 40px;
+	border: 3px solid var(--gold);
+	border-top: none;
+	background-color: var(--accent-text);
+	color: var(--gold);
+	border-radius: 0 0 5px 5px;
+}
+.health-icon {
+	width: 2rem;
+	height: 2rem;
+	background: radial-gradient(circle at center, #FF6666, #CC3333);
+	border-radius: 50%;
+	border: 4px solid #FF9999;
+	color: #AA1212;
+	-webkit-text-stroke: 1px #AA1212;
+	text-shadow: 1px 1px 3px #880000;
+}
+.icon-text-bg {
+	position: absolute;
+	width: 4rem;
+	height: 1.6rem;
+	top: 50%;
+	left: 100%;
+	transform: translateY(-50%);
+	background-color: var(--dialog-bg);
+	border: 2px solid var(--gold);
+	border-radius: 0 999px 999px 0;
+	z-index: -1;
+}
+
+
 @media(max-width: 600px) {
 	.box {
 		width: 200px;
@@ -737,12 +802,6 @@ main {
 @media(max-width: 550px) {
 	.score-box, .score {
 		font-size: 1rem;
-	}
-	.hero-stat {
-		font-size: 1rem;
-	}
-	.xpText, .levelText, .goldText, .healthText {
-		font-size: 1.1rem;
 	}
 	.info, .info-main {
 		font-size: 1rem;
