@@ -252,14 +252,14 @@ const locations = [
     },
     {
         name: "shop",
-        "button text": ["Buy health", "Buy dagger", "Lucky Box"],
+        "button text": ["health", "dagger", "Lucky Box"],
         "button functions": [buyHealth, buyWeapon, buyLucky],
         text: "You enter the shop.",
         bg: "url('assests/shop.jpg')"
     },
     {
         name: "cave",
-        "button text": ["slime", "slime group", "fanged beast"],
+        "button text": ["slime", "slime group", "beast"],
         "button functions": [fightSlime, fightSlimeGroup, fightBeast],
         text: "You enter the cave. You see some monsters.",
         bg: "url('assests/cave.png')"
@@ -699,6 +699,7 @@ function defeatMonster() {
     update(locations[4]);
 }
 function updateLevel() {
+    const xpProgressBar = document.querySelector(".xp-progress-bar");
     const levelXp = [0, 150, 250, 400, 600, 800, 1000, 1300, 1600, 2000];
     let level = 1;
     for (let i = 1; i < levelXp.length - 1; i++) {
@@ -711,6 +712,10 @@ function updateLevel() {
             level = 1;
         }
     }
+    let xpForNextLevel = levelXp[level] - levelXp[level - 1];
+    let currentXpInLevel = xp - levelXp[level - 1];
+    let xpPercent = (currentXpInLevel / xpForNextLevel) * 100;
+    xpProgressBar.style.background = `linear-gradient(to right, var(--gold) 0%, var(--gold) ${xpPercent}%, var(--accent-text) ${xpPercent}%, var(--accent-text) 100%)`;
     levelText.innerText = level;
     heroLevelText.innerText = level;
 }

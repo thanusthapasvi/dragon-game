@@ -6,19 +6,19 @@
 	<title>Game</title>
 	<link rel="stylesheet" href="styles.css" />
 </head>
-<body class="light">
-	<header class="padding-5 width100 position-fixed flex flex-align shadow-down">
-		<h1>Game</h1>
+<body class="position-relative">
+	<header class="padding-5 width100 position-fixed flex flex-align flex-justify shadow-down">
+		<h1>Dragon Game</h1>
 	</header>
-	<main class="soft-border flex flex-align flex-justify flex-column">
-		<div class="game width-height-100 flex-align flex-column">
+	<main class="flex flex-align flex-justify position-fixed">
+		<div class="game flex-align flex-justify">
 			<div class="game-window flex flex-align flex-justify flex-column position-relative">
 				<img src="assests/hero.png" aria-label="hero" class="hero-image position-absolute" />
 				<div class="monster-container position-absolute"></div>
 				<img src="assests/beast1.png" aria-label="monster" class="monster-image position-absolute" />
 				<p class="monster-damage position-absolute">0</p>
 				<p class="hero-damage position-absolute">0</p>
-				<div class="top-bar width100 flex flex-align flex-justify position-fixed">
+				<div class="top-bar flex flex-align flex-justify position-fixed">
 					<button class="top-buttons top-button1">
 						<img src="assests/ic_back.svg" aria-label="back button" class="button-icons" />
 						Back
@@ -43,6 +43,11 @@
 						Weapons will automatically combined to upgrade to weapon of next tier (see ? in inventory for more info).<br>
 						Good luck!
 					</p>
+				</div>
+				<div class="bottom-bar flex flex-align flex-justify position-fixed">
+					<button class="bottom-buttons bottom-button1">Shop</button>
+					<button class="bottom-buttons bottom-button2">Cave</button>
+					<button class="bottom-buttons bottom-button3">Dragon</button>
 				</div>
 				<div class="in-game flex width-height-100 position-relative">
 					<div class="hero-profile flex-align flex-justify flex-column position-absolute">
@@ -134,18 +139,14 @@
 							<div class="hero-progress"></div>
 						</div>
 					</div>
-					<div class="hero-stats flex flex-align flex-justify position-absolute">
+					<div class="hero-stats flex flex-align flex-justify position-fixed">
+						<div class="xp-progress-bar"></div>
 						<p class="hero-stat">XP: <span class="xpText">0</span></p>
 						<p class="hero-stat">Level: <span class="levelText">1</span></p>
 						<p class="hero-stat">Gold: <span class="goldText">50</span></p>
 						<p class="hero-stat">Health: <span class="healthText">100</span></p>
 					</div>
 					<p class="dialog position-fixed">Welcome to Dragon Repeller. You must defeat the dragon that is preventing people from leaving the town. Use the buttons above to go somewhere.</p>
-				</div>
-				<div class="bottom-bar width100 flex flex-align flex-justify position-fixed">
-					<button class="bottom-buttons bottom-button1">Shop</button>
-					<button class="bottom-buttons bottom-button2">Cave</button>
-					<button class="bottom-buttons bottom-button3">Dragon</button>
 				</div>
 			</div>
 		</div>
