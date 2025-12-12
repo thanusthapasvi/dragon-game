@@ -123,6 +123,16 @@
 .appear {
 	animation: appear 0.3s ease;
 }
+.info-text {
+	position: absolute;
+	background-color: rgba(0, 0, 0, 0.6);
+	font-size: 1rem;
+	padding: 0.5rem;
+	border-radius: 8px;
+	color: white;
+	display: none;
+	z-index: 10;
+}
 
 @keyframes bounce {
 	0%, 100% {
@@ -267,12 +277,11 @@ main {
 }
 .hero-stats {
 	height: 40px;
-	width: clamp(360px, 75%, 400px);
+	width: 20rem;
 	top: calc(var(--bars-height) + 0.5rem);
 	left: 50%;
 	transform: translateX(-50%);
 	padding: 0.5rem;
-	justify-content: center;
 	gap: 4.5rem;
 	background-color: transparent;
 }
@@ -481,16 +490,6 @@ main {
 .game-info-mark {
 	background-color: var(--accent-2);
 }
-.inventory-info-text, .game-info-text {
-	position: absolute;
-	background-color: rgba(0, 0, 0, 0.5);
-	font-size: 1rem;
-	padding: 0.5rem;
-	border-radius: 8px;
-	color: white;
-	display: none;
-	z-index: 10;
-}
 .inventory-info-text {
 	width: 100%;
 	top: 2rem;
@@ -645,42 +644,24 @@ main {
 	height: 16px;
 	border: 2px solid black;
 }
-#lucky {
-	max-width: 180px;
-	max-height: 180px;
-	padding: 16px 6px;
-	color: white;
-	font-size: 1.3rem;
-	border: 5px solid black;
-	box-shadow: -3px 3px black;
-	background-color: var(--accent);
-}
-
-#lucky:active {
-	transform: translate(-3px, 3px);
-	box-shadow: 0 0 black;
-}
-.open-text {
-	width: 120px;
-	top: calc(100% + 15px);
-	left: calc(50% - 60px);
-	display: none;
-	font-size: 1rem;
+.open-lucky-text {
+	position: fixed;
+	bottom: 5rem;
+	left: 50%;
+	transform: translateX(-50%) scale(1);
+	font-size: 1.2rem;
 	padding: 6px 4px;
 	border-radius: 8px;
-	color: var(--text);
-	background-color: var(--text-bg);
+	color: white;
+	animation: textBounce 1s ease infinite;
 }
-.open-text::after {
-	content: "";
-	top: -0.6rem;
-	left: calc(50% - 0.4rem);
-	position: absolute;
-	width: 0.8rem;
-	height: 0.8rem;
-	border-radius: 8px;
-	clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-	background-color: var(--text-bg);
+@keyframes textBounce {
+	0%, 30%, 75%, 90%, 100% {
+		transform: translateX(-50%) scale(1);
+	}
+	15%, 60% {
+		transform: translateX(-50%) scale(1.2);
+	}
 }
 
 .result {
@@ -745,23 +726,26 @@ main {
 	overflow: hidden;
 }
 .coin-icon, .xp-icon, .health-icon {
+	width: 2rem;
 	font-size: 1.4rem;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	font-weight: bolder;
+	cursor: pointer;
+	animation: none;
+}
+.coin-icon, .health-icon {
+	height: 2rem;
+	border-radius: 50%;
 }
 .coin-icon {
-	width: 2rem;
-	height: 2rem;
 	border: 4px solid #FFd934;
-	border-radius: 50%;
 	background: radial-gradient(circle at center, #EAC934, #AA9911);
 	color: #FFd934;
 	box-shadow: -2px 0px 0px -0.2px #BBA912;
 }
 .xp-icon {
-	width: 2rem;
 	height: 40px;
 	border: 3px solid var(--gold);
 	border-top: none;
@@ -770,14 +754,58 @@ main {
 	border-radius: 0 0 5px 5px;
 }
 .health-icon {
-	width: 2rem;
-	height: 2rem;
 	background: radial-gradient(circle at center, #FF6666, #CC3333);
-	border-radius: 50%;
 	border: 4px solid #FF9999;
 	color: #AA1212;
 	-webkit-text-stroke: 1px #AA1212;
 	text-shadow: 1px 1px 3px #880000;
+}
+.game-element-text {
+	position: absolute;
+	width: 8rem;
+	top: calc(100% + 0.5rem);
+	left: 3rem;
+	transform: translateX(-50%);
+	background: rgba(0, 0, 0, 0.3);
+	-webkit-text-stroke: 0;
+	text-shadow: none;
+	font-size: clamp(0.75rem, 1vw, 1rem);
+	padding: 4px 8px;
+	border-radius: 8px;
+	color: white;
+	backdrop-filter: blur(4px);
+	display: none;
+}
+.game-element-text::before {
+	content: '';
+	position: absolute;
+	width: 0.8rem;
+	height: 0.5rem;
+	top: -0.5rem;
+	left: 50%;
+	transform: translateX(-50%);
+	background: rgba(0, 0, 0, 0.3);
+	clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+}
+.xp-icon-text {
+	color: #56d9ff;
+}
+.gold-icon-text {
+	color: #ffd956;
+}
+.health-icon-text {
+	color: #ff5656;
+}
+.xp-icon:hover .xp-info-text, .coin-icon:hover .gold-info-text, .health-icon:hover .health-info-text {
+	display: block;
+}
+@keyframes pulse {
+	0%, 50%, 100% {
+		transform: scale(1);
+	}
+	25%, 75% {
+		transform: scale(1.08);
+	}
 }
 .icon-text-bg {
 	position: absolute;

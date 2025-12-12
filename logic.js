@@ -108,15 +108,13 @@ let lidState = 0;
 let t = 0;
 function animate() {
     requestAnimationFrame(animate);
-    if(gift) {
-        gift.rotation.y += 0.01;
-    }
     if (lidState === 1) {
         // Opening
         t += 0.05;
         lid.position.y = Math.sin(t) * 0.3;
         
         if (t >= 0.6) lidState = 2;
+        gift.rotation.y += 0.25;
     } 
     else if (lidState === 2) {
         // Closing
@@ -124,6 +122,7 @@ function animate() {
         lid.position.y = Math.sin(t) * 0.3;
         
         if (t <= 0) lidState = 0;
+        gift.rotation.y += 0.25;
     }
     if(monster) {
         const t = performance.now() * 0.002;
@@ -152,6 +151,7 @@ function playLidAnimation() {
 /* Main game Start */
 
 let xp = 0;
+let level = 1;
 let maxHealth = 100;
 let health = maxHealth;
 let gold = 50;
@@ -216,8 +216,8 @@ const monsters = [
     },
     {
         name: "slime group",
-        level: 6,
-        health: 60,
+        level: 10,
+        health: 100,
         image: "assests/slimeGroup.png",
         scaleX: 0.4,
         scaleY: 0.4,
@@ -225,7 +225,7 @@ const monsters = [
     },
     {
         name: "beast",
-        level: 10,
+        level: 15,
         health: 150,
         image: "assests/beast1.png",
         scaleX: 0.8,
@@ -235,7 +235,7 @@ const monsters = [
     {
         name: "dragon",
         level: 50,
-        health: 800,
+        health: 500,
         image: "assests/dragon.png",
         scaleX: 0.8,
         scaleY: 0.6,
@@ -273,7 +273,7 @@ const locations = [
     },
     {
         name: "kill monster",
-        "button text": ["Go to shop", "Explore Cave", "Go to town"],
+        "button text": ["Shop", "Cave", "Town"],
         "button functions": [goShop, goCave, goTown],
         text: 'The monster screams "Arg!" as it dies. You gain experience points and find gold.',
         bg: "url('assests/battle.jpg')"
@@ -535,6 +535,7 @@ function buyHealth() {
         health = maxHealth;
         goldText.innerText = gold;
         healthText.innerText = maxHealth;
+        iconsPulse("healthIcon");
     } else {
         playBuyFailAudio();
         dialog.innerText = "You do not have enough gold to buy health.";
@@ -647,7 +648,7 @@ function attack() {
     heroDamageText.style.display = "block";
     heroDamageText.innerText = heroHitAmount;
     if (isMonsterHit()) {
-        let monsterhitAmount = weapons[currentWeapon].power + Math.floor(Math.random() * xp) + 1;
+        let monsterhitAmount = weapons[currentWeapon].power + Math.floor(Math.random() * xp) + level;
         monsterHealth -= monsterhitAmount;
         monsterDamageText.style.display = "block";
         monsterDamageText.innerText = monsterhitAmount;
@@ -678,7 +679,7 @@ function attack() {
 }
 
 function getMonsterAttackValue(level) {
-    const hit = (level * 5) - (Math.floor(Math.random() * xp));
+    const hit = (level * 5) - (Math.floor(Math.random() * xp) + level);
     return hit > 0 ? hit : 0;
 }
 
@@ -694,14 +695,15 @@ function defeatMonster() {
     gold += Math.floor(monsters[fighting].level * 6.7);
     xp += monsters[fighting].level;
     goldText.innerText = gold;
+    iconsPulse("coinIcon");
     xpText.innerText = xp;
+    iconsPulse("xpIcon");
     updateLevel();
     update(locations[4]);
 }
 function updateLevel() {
     const xpProgressBar = document.querySelector(".xp-progress-bar");
     const levelXp = [0, 150, 250, 400, 600, 800, 1000, 1300, 1600, 2000];
-    let level = 1;
     for (let i = 1; i < levelXp.length - 1; i++) {
         if (xp > 2000) {
             level = 10;
@@ -774,7 +776,11 @@ let rarities = [
     "var(--legendary)",
     "var(--mythic)"
 ]
+
+let luckyGameTouch = document.querySelector(".lucky-game-cover");
+luckyGameTouch.addEventListener('click', luckyBlock);
 let luckRate = 0.5;
+
 function luckyBlock() {
     let gameBg = document.querySelector(".lucky-game");
     const dots = document.querySelectorAll(".dot");
@@ -831,6 +837,33 @@ document.querySelectorAll('.top-buttons, .bottom-buttons, .page-item')
         btn.classList.add('bounce-animation');
         setTimeout(() => {
             btn.classList.remove('bounce-animation');
+        }, 400);
+    });
+});
+
+function iconsPulse(iconName) {
+    const xpIcon = document.querySelector(".xp-icon");
+    const coinIcon = document.querySelector(".coin-icon");
+    const healthIcon = document.querySelector(".health-icon");
+
+    let icon;
+    if(iconName === "coinIcon") {
+        icon = coinIcon;
+    } else if(iconName === "healthIcon") {
+        icon = healthIcon;
+    } else {
+        icon = xpIcon;
+    }
+    icon.style.animation = "pulse 0.4s ease-in-out";
+    setTimeout(() => {
+        icon.style.animation = "none";
+    }, 300);
+}
+document.querySelectorAll(".game-element-icon").forEach(icon => {
+    icon.addEventListener('click', () => {
+        icon.style.animation = "bounce 0.3s ease";
+        setTimeout(() => {
+            icon.style.animation = "none";
         }, 400);
     });
 });

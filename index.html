@@ -33,14 +33,14 @@
 						Hero
 					</button>
 					<p class="game-info-mark">?</p>
-					<p class="game-info-text">
+					<p class="game-info-text info-text">
 						Welcome.<br>
-						Defeat the Dragon to win the game!<br>
-						Use the buttons above and below to navigate.<br>
-						Defeat monsters to gain XP and Gold.<br>
-						Use Gold to buy health & Weapons in the shop.<br>
-						the best weapon you have will be used automatically in battle.<br>
-						Weapons will automatically combined to upgrade to weapon of next tier (see ? in inventory for more info).<br>
+						=> Defeat the Dragon to win the game!<br>
+						=> Use the buttons above and below to navigate.<br>
+						=> Defeat monsters to gain XP and Gold.<br>
+						=> Use Gold to buy health & Weapons in the shop.<br>
+						=> the best weapon you have will be used automatically in battle.<br>
+						=> Weapons will automatically combined to upgrade to weapon of next tier (see ? in inventory for more info).<br>
 						Good luck!
 					</p>
 				</div>
@@ -88,7 +88,7 @@
 						<div class="inventory-info">
 							Inventory
 							<p class="inventory-info-mark">?</p>
-							<p class="inventory-info-text">
+							<p class="inventory-info-text info-text">
 								Weapons will automatically combined to upgrade to weapon of next tier when you acquired certain amount (NOTE: stick can't be upgraded).<br>
 								2 dagger -> 1 hammer<br>
 								3 hammer -> 1 iron sword<br>
@@ -140,18 +140,23 @@
 						</div>
 					</div>
 					<div class="hero-stats flex flex-align position-fixed">
-						<div class="xp-icon position-relative">
+						<div class="game-element-icon xp-icon position-relative">
+							<p class="game-element-text xp-info-text">
+								Increase <span class="xp-icon-text">Level</span> by getting <span class="xp-icon-text">xp</span> from monsters to improve your damage
+							</p>
 							<div class="icon-text-bg xp-progress-bar">
 								<span class="xpText">0</span>
 							</div>
 							<span class="levelText">1</span>
 						</div>
-						<div class="coin-icon position-relative">$
+						<div class="game-element-icon coin-icon position-relative">$
+							<p class="game-element-text gold-info-text">Use <span class="gold-icon-text">Gold</span> to purchase items from shop</p>
 							<div class="icon-text-bg">
 								<span class="goldText">50</span>
 							</div>
 						</div>
-						<div class="health-icon position-relative">+
+						<div class="game-element-icon health-icon position-relative">+
+							<p class="game-element-text health-info-text">increase Max <span class="health-icon-text">Health</span> to last longer in battle</p>
 							<div class="icon-text-bg">
 								<span class="healthText">100</span>
 							</div>
@@ -164,7 +169,6 @@
 		<div class="lucky-box width-height-100 flex-align flex-justify flex-column">
 			<div class="lucky-game soft-border position-relative">
 				<div class="lucky-game-cover width-height-100 soft-border flex flex-align flex-justify flex-column position-absolute">
-
 					<div class="box position-relative"></div>
 
 					<div class="dot-box flex flex-align flex-justify">
@@ -173,10 +177,7 @@
 						<div class="dot"></div>
 						<div class="dot"></div>
 					</div>
-					<button onclick="luckyBlock()" class="cursor-pointor border-circle position-relative" id="lucky">
-						Click
-						<div class="open-text position-absolute">Click to Open</div>
-					</button>
+					<p class="open-lucky-text">Click to Open</p>
 				</div>
 			</div>
 		</div>
