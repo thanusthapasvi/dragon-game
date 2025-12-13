@@ -149,13 +149,11 @@ function playLidAnimation() {
 }
 
 /* Loading... */
-window.addEventListener("load", () => {
+window.addEventListener("DOMContentLoaded", () => {
 	const loader = document.getElementById("loader-overlay");
 	loader.classList.add("hidden");
-
 	setTimeout(() => loader.remove(), 400);
 });
-
 
 /* Main game Start */
 

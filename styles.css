@@ -522,7 +522,7 @@ main {
 	transform: translateX(-50%);
 	border-radius: 12px;
 	background-color: transparent;
-	background-image: url("assests/Hero Bg.png");
+	background-image: url("assests/heroBg.png");
 	background-repeat: no-repeat;
 	background-size: cover;
 	display: none;
@@ -574,7 +574,7 @@ main {
 	transform: translateX(-50%);
 	display: none;
 	background-color: transparent;
-	background-image: url("assests/inventory Bg.png");
+	background-image: url("assests/inventoryBg.png");
 	background-repeat: no-repeat;
 	background-size: cover;
 	animation: entry 0.5s ease-out;
