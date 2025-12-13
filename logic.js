@@ -149,7 +149,7 @@ function playLidAnimation() {
 }
 
 /* Loading... */
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("load", () => {
 	const loader = document.getElementById("loader-overlay");
 	loader.classList.add("hidden");
 	setTimeout(() => loader.remove(), 400);
