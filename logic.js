@@ -476,8 +476,12 @@ function openInventory() {
         isInventoryOpen = false;
         dialog.style.display = "block";
     } else {
+        inventoryWindow.classList.remove('floating-ani');
         inventoryWindow.style.display = "flex";
         isInventoryOpen = true;
+        setTimeout(() => {
+            inventoryWindow.classList.add('floating-ani');
+        }, 500);
         bag.classList.add('active-tab');
         dialog.style.display = "none";
     }
@@ -492,8 +496,12 @@ function openHero() {
         isHeroOpen = false;
         dialog.style.display = "block";
     } else {
+        heroWindow.classList.remove('floating-ani');
         heroWindow.style.display = "flex";
         hero.classList.add('active-tab');
+        setTimeout(() => {
+            heroWindow.classList.add('floating-ani');
+        }, 500);
         isHeroOpen = true;
         if (!heroFirst)
             dialog.style.display = "none";
@@ -530,11 +538,16 @@ function updateHero() {
 function buyHealth() {
     if (gold >= 10) {
         playBuySuccessAudio();
+        const prevHealth = maxHealth;
+        const prevGold = gold;
         gold -= 10;
         maxHealth += 10;
         health = maxHealth;
-        goldText.innerText = gold;
-        healthText.innerText = maxHealth;
+        // goldText.innerText = gold;
+        animateNumber(goldText, prevGold, gold);
+        iconsPulse("coinIcon");
+        // healthText.innerText = maxHealth;
+        animateNumber(healthText, prevHealth, maxHealth);
         iconsPulse("healthIcon");
     } else {
         playBuyFailAudio();
@@ -545,8 +558,11 @@ function buyHealth() {
 function buyWeapon() {
     if (gold >= 30) {
         playBuySuccessAudio();
+        const prevGold = gold;
         gold -= 30;
-        goldText.innerText = gold;
+        // goldText.innerText = gold;
+        animateNumber(goldText, prevGold, gold);
+        iconsPulse("coinIcon");
         let newWeapon = weapons[1].name;
         dialog.innerText = "You now have a " + newWeapon + ".";
         addWeapon(newWeapon);
@@ -692,11 +708,15 @@ function dodge() {
 }
 
 function defeatMonster() {
+    const prevGold = gold;
+    const prevXp = xp;
     gold += Math.floor(monsters[fighting].level * 6.7);
     xp += monsters[fighting].level;
-    goldText.innerText = gold;
+    // goldText.innerText = gold;
+    animateNumber(goldText, prevGold, gold);
     iconsPulse("coinIcon");
-    xpText.innerText = xp;
+    // xpText.innerText = xp;
+    animateNumber(xpText, prevXp, xp);
     iconsPulse("xpIcon");
     updateLevel();
     update(locations[4]);
@@ -867,6 +887,20 @@ document.querySelectorAll(".game-element-icon").forEach(icon => {
         }, 400);
     });
 });
+
+function animateNumber(textElement, start, end) {
+	let startTime = null;
+    const duration = 400;
+	function tick(time) {
+		if (!startTime) startTime = time;
+		const progress = Math.min((time - startTime) / duration, 1);
+		textElement.innerText = Math.floor(start + (end - start) * progress);
+		if (progress < 1) requestAnimationFrame(tick);
+	}
+
+	requestAnimationFrame(tick);
+}
+
 
 
 //audio

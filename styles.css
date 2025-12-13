@@ -1,12 +1,16 @@
 :root {
 	--accent: rgb(120, 120, 200);
+	--accent-shadow: rgb(150, 150, 250);
 	--accent-2: rgb(180, 50, 180);
+	--accent-2-shadow: rgb(250, 100, 250);
 	--accent-text: rgb(50, 50, 255);
+
 	--common: rgb(220, 220, 220);
 	--rare: rgb(30, 220, 30);
 	--epic: rgb(220, 30, 220);
 	--legendary: rgb(255, 255, 0);
 	--mythic: rgb(230, 20, 20);
+
 	--chest: rgb(150, 100, 0);
 	--gold: #FFD700;
 	--dot-c1: rgba(25, 25, 100, 0.3);
@@ -113,7 +117,7 @@
 	transform: translate(-3px, -3px);
 	border-radius: 8px;
 	animation: bgRotate 1s linear infinite;
-	background: conic-gradient(from var(--angle) at 50% 50%, var(--gold) 0%, var(--gold) 5%, transparent 10%, transparent 40%, var(--gold) 45%, var(--gold) 55%, transparent 60%, transparent 90%, var(--gold) 95%);;
+	background: conic-gradient(from var(--angle) at 50% 50%, var(--accent-text) 0%, var(--accent-text) 5%, transparent 10%, transparent 40%, var(--accent-text) 45%, var(--accent-text) 55%, transparent 60%, transparent 90%, var(--accent-text) 95%);;
 	z-index: -1;
 }
 .current-weapon-highlight::before {
@@ -240,9 +244,11 @@ main {
 	z-index: 10;
 }
 .top-bar {
+	background: linear-gradient(to bottom, var(--accent-shadow) 30%, var(--accent) 50%);
 	top: 0.5rem;
 }
 .bottom-bar {
+	background: linear-gradient(to bottom, var(--accent) 50%, var(--accent-shadow) 70%);
 	bottom: 1rem;
 }
 .top-buttons, .bottom-buttons {
@@ -405,94 +411,112 @@ main {
 	padding: 0.5rem 2rem;
 }
 .hero-profile {
-	top: 50%;
+	top: 0%;
 	left: 50%;
 	width: 340px;
-	height: 300px;
-	transform: translate(-50%, -50%);
+	height: 400px;
+	transform: translateX(-50%);
 	border-radius: 12px;
-	padding: 1rem;
-	background-color: var(--accent);
+	background-color: transparent;
+	background-image: url("assests/Hero Bg.png");
+	background-repeat: no-repeat;
+	background-size: cover;
 	display: none;
 	animation: entry 0.5s ease-out;
 }
 @keyframes entry {
 	from {
-		transform: translate(-50%, -150%);
+		transform: translate(-50%, -100%);
 	}
 	to {
-		transform: translate(-50%, -50%);
+		transform: translate(-50%, 0%);
 	}
 }
 .profile-image-cover {
 	width: 100%;
-	margin-bottom: 1rem;
+	margin-top: 5rem;
 }
 .profile-image {
 	width: 200px;
 	height: auto;
 }
 .hero-info {
-	width: 100%;
+	width: 60%;
 	position: relative;
 	align-items: start;
 	padding: 0.5rem;
-	border-radius: 8px;
-	background-color: var(--accent-2);
-	border-bottom: 3px solid var(--gold);
-}
-.hero-info-left, .hero-info-right {
-	width: 50%;
+	background-color: transparent;
 }
 .info, .info-main {
 	font-size: 1.2rem;
-	color: white;
+	color: black;
+}
+.info-name {
+	position: absolute;
+	top: 21%;
+	left: 50%;
+	transform: translateX(-50%);
+	color: var(--gold);
+	font-size: 1.25rem;
 }
 .info-main {
 	font-weight: bold;
 }
 .inventory-box {
-	top: 50%;
+	top: -7%;
 	left: 50%;
-	width: 360px;
-	height: 360px;
-	transform: translate(-50%, -50%);
-	border-radius: 12px;
-	padding: 1rem;
+	width: 350px;
+	height: 520px;
+	transform: translateX(-50%);
 	display: none;
-	background-color: var(--accent);
+	background-color: transparent;
+	background-image: url("assests/inventory Bg.png");
+	background-repeat: no-repeat;
+	background-size: cover;
 	animation: entry 0.5s ease-out;
 }
 .inventory-info {
-	border-radius: 8px;
-	background-color: var(--accent-2);
-	color: white;
-	font-size: 1.2rem;
+	top: 24%;
+	left: 50%;
+	transform: translateX(-50%);
+	color: var(--gold);
+	font-size: 1.75rem;
 	padding: 0.5rem;
-	position: relative;
-	border-bottom: 3px solid var(--gold);
+}
+.floating-ani {
+	animation: floating 3s ease-in-out infinite;
+}
+@keyframes floating {
+	0%, 100% {
+		transform: translate(-50%, 0%);
+	}
+	50% {
+		transform: translate(-50%, 3%);
+	}
 }
 /* for ? in inventory and game */
 .inventory-info-mark, .game-info-mark {
 	position: absolute;
-	right: 0.5rem;
-	top: 50%;
-	font-size: 16px;
-	color: white;
-	transform: translateY(-50%);
+	font-size: 1rem;
+	color: var(--gold);
 	padding: 3px 8px;
 	border-radius: 50%;
 	cursor: pointer;
 }
 .inventory-info-mark {
+	top: 27%;
+	left: 70%;
 	background-color: var(--accent);
 }
 .game-info-mark {
+	top: 50%;
+	right: 0.5rem;
+	transform: translateY(-50%);
 	background-color: var(--accent-2);
 }
 .inventory-info-text {
 	width: 100%;
-	top: 2rem;
+	top: 33%;
 	left: 50%;
 	transform: translateX(-50%);
 }
@@ -506,16 +530,16 @@ main {
 .inventory-info-mark:hover + .inventory-info-text, .game-info-mark:hover + .game-info-text {
 	display: block;
 }
-
 .inventory-weapons {
-	margin-top: 2rem;
+	top: 38%;
+	left: 22%;
 	display: grid;
-	grid-template-columns: repeat(3, auto);
-	gap: 1rem;
+	grid-template-columns: repeat(2, auto);
+	gap: 0.4rem;
 }
 .weapon-image {
 	position: absolute;
-	width: 100px;
+	width: 95px;
 	height: auto;
 	top: 50%;
 	left: 50%;
@@ -523,23 +547,22 @@ main {
 }
 .weapons {
 	width: 100px;
-	height: 100px;
-	border-radius: 8px;
+	height: 95px;
+	border-radius: 6px;
 	background-color: var(--accent-2);
-	padding: 8px;
 	position: relative;
 }
-
 .weapon-name {
 	position: absolute;
 	left: 0;
 	bottom: 0;
 	width: 100%;
-	height: 2.5rem;
-	padding: 0.4rem;
-	font-size: 1rem;
+	height: 2.4rem;
+	padding: 0.3rem;
+	font-size: 0.9rem;
 	color: white;
-	background-color: rgba(50, 150, 150, 0.5);
+	border-radius: 0 0 6px 6px;
+	background-color: rgba(50, 150, 150, 0.7);
 }
 .weapon-quanity {
 	position: absolute;
@@ -549,6 +572,7 @@ main {
 	height: 1.2rem;
 	font-size: 1rem;
 	color: white;
+	border-radius: 0 0 6px 0;
 	background-color: var(--accent-text);
 	text-align: center;
 }
@@ -829,9 +853,6 @@ main {
 }
 @media(max-width: 550px) {
 	.score-box, .score {
-		font-size: 1rem;
-	}
-	.info, .info-main {
 		font-size: 1rem;
 	}
 }
