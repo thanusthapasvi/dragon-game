@@ -91,19 +91,13 @@
 	animation: border-appear 0.3s ease;
 	transform: translateX(-50%);
 }
-@keyframes border-appear {
-	from {
-		width: 0%;
-	}
-	to {
-		width: 100%;
-	}
-}
+
 @property --angle {
 	syntax: "<angle>";
 	initial-value: 0deg;
 	inherits: false;
 }
+
 .current-weapon-highlight {
 	position: relative;
 }
@@ -124,9 +118,7 @@
 	filter: blur(10px);
 	opacity: 0.6;
 }
-.appear {
-	animation: appear 0.3s ease;
-}
+
 .info-text {
 	position: absolute;
 	background-color: rgba(0, 0, 0, 0.6);
@@ -136,40 +128,6 @@
 	color: white;
 	display: none;
 	z-index: 10;
-}
-
-@keyframes bounce {
-	0%, 100% {
-		transform: scale(1);
-		color: var(--gold);
-	}
-	25% {
-		transform: scale(0.9);
-		color: var(--gold);
-	}
-	50% {
-		transform: scale(1.1);
-		color: var(--gold);
-	}
-	
-}
-@keyframes bgRotate {
-	from {
-		--angle: 0deg;
-	}
-	to {
-		--angle: 360deg;
-	}
-}
-@keyframes appear {
-	from {
-		transform: scale(0.5) translateY(2rem);
-		opacity: 0;
-	}
-	to {
-		transform: scale(1) translateY(0rem);
-		opacity: 1;
-	}
 }
 
 * {
@@ -528,14 +486,7 @@ main {
 	display: none;
 	animation: entry 0.5s ease-out;
 }
-@keyframes entry {
-	from {
-		transform: translate(-50%, -100%);
-	}
-	to {
-		transform: translate(-50%, 0%);
-	}
-}
+
 .profile-image-cover {
 	width: 100%;
 	margin-top: 5rem;
@@ -559,9 +510,9 @@ main {
 	position: absolute;
 	top: 21%;
 	left: 50%;
-	transform: translateX(-50%);
+	transform: translateX(-53%);
 	color: var(--gold);
-	font-size: 1.25rem;
+	font-size: 1.27rem;
 }
 .info-main {
 	font-weight: bold;
@@ -586,17 +537,6 @@ main {
 	color: var(--gold);
 	font-size: 1.75rem;
 	padding: 0.5rem;
-}
-.floating-ani {
-	animation: floating 3s ease-in-out infinite;
-}
-@keyframes floating {
-	0%, 100% {
-		transform: translate(-50%, 0%);
-	}
-	50% {
-		transform: translate(-50%, 3%);
-	}
 }
 /* for ? in inventory and game */
 .inventory-info-mark, .game-info-mark {
@@ -680,29 +620,24 @@ main {
 	background-color: var(--accent-text);
 	text-align: center;
 }
-.page-box {
-	top: 50%;
+
+.page-box, .shop-page-box {
 	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 350px;
-	height: 140px;
-	padding: 0.5rem;
-	background-color: var(--accent);
-	gap: 1rem;
-	border-radius: 12px;
 	display: none;
 }
-.page-item {
+.page-item, .shop-page-item {
 	width: 100px;
 	height: 120px;
 	background-color: var(--accent-2);
 	position: relative;
 	padding: 0.5rem;
 	border-radius: 8px;
+	box-shadow: -2px 3px black;
 	cursor: pointer;
 	overflow: hidden;
+	transition: transform 0.2s ease;
 }
-.page-item-image {
+.page-item-image, .shop-page-item-image {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -710,7 +645,7 @@ main {
 	width: 100px;
 	height: auto;
 }
-.page-item-name, .page-item-price {
+.page-item-name, .page-item-price, .shop-page-item-name, .shop-page-item-price {
 	position: absolute;
 	font-size: 1.1rem;
 	color: white;
@@ -719,13 +654,48 @@ main {
 	text-align: center;
 	z-index: 10;
 }
-.page-item-name {
+.page-item-name, .shop-page-item-name {
 	top: 0;
 	left: 0;
 }
-.page-item-price {
+.page-item-price, .shop-page-item-price {
 	left: 0;
 	bottom: 0;
+}
+.page-box {
+	top: 50%;
+	width: 340px;
+	height: 140px;
+	padding: 0.5rem;
+	transform: translate(-50%, -50%);
+	background-color: var(--accent);
+	gap: 1rem;
+	border-radius: 12px;
+}
+.shop-page-box {
+	top: 0%;
+	width: 340px;
+	height: 460px;
+	transform: translateX(-50%);
+	background-color: transparent;
+	background-image: url("assests/shopBg.png");
+	background-size: cover;
+	animation: entry 0.4s ease;
+}
+.shop-text {
+	top: 15%;
+	left: 50%;
+	transform: translateX(-55%);
+	font-size: 2rem;
+	color: var(--gold);
+}
+.shop-page-box-cover {
+	top: 35%;
+	left: 50%;
+	transform: translateX(-50%);
+	display: grid;
+	grid-template-columns: repeat(2, auto);
+	gap: 1rem;
 }
 /* Lucky Block Start*/
 .lucky-box {
@@ -949,6 +919,72 @@ main {
 }
 
 
+/* some animations */
+/* for shop, profile, inventory */
+@keyframes entry {
+	from {
+		transform: translate(-50%, -100%);
+	}
+	to {
+		transform: translate(-50%, 0%);
+	}
+}
+.floating-ani {
+	animation: floating 3s ease-in-out infinite;
+}
+@keyframes floating {
+	0%, 100% {
+		transform: translate(-50%, 0%);
+	}
+	50% {
+		transform: translate(-50%, 3%);
+	}
+}
+
+@keyframes bounce {
+	0%, 100% {
+		transform: scale(1);
+		color: var(--gold);
+	}
+	25% {
+		transform: scale(0.9);
+		color: var(--gold);
+	}
+	50% {
+		transform: scale(1.1);
+		color: var(--gold);
+	}
+	
+}
+@keyframes bgRotate {
+	from {
+		--angle: 0deg;
+	}
+	to {
+		--angle: 360deg;
+	}
+}
+.appear {
+	animation: appear 0.3s ease;
+}
+@keyframes appear {
+	from {
+		transform: scale(0.5) translateY(2rem);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1) translateY(0rem);
+		opacity: 1;
+	}
+}
+@keyframes border-appear {
+	from {
+		width: 0%;
+	}
+	to {
+		width: 100%;
+	}
+}
 @media(max-width: 600px) {
 	.box {
 		width: 200px;
@@ -985,5 +1021,8 @@ main {
 	}
 	.top-buttons:hover:active {
 		color: var(--gold);
+	}
+	.page-item:hover, .shop-page-item:hover {
+		transform: scale(1.05);
 	}
 }

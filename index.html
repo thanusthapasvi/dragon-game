@@ -58,113 +58,139 @@
 					<button class="bottom-buttons bottom-button2">Cave</button>
 					<button class="bottom-buttons bottom-button3">Dragon</button>
 				</div>
-				<div class="in-game flex width-height-100 position-relative">
-					<div class="hero-profile flex-align flex-justify flex-column position-absolute">
-							<p class="info-main info-name">Dragon Repeller</p>
-							<div class="profile-image-cover flex flex-align flex-justify">
-								<img src="assests/hero.png" aria-label="hero" class="profile-image" />
-							</div>
-							<div class="hero-info flex flex-justify flex-column">
-								<p class="info">Level: <span class="info-main info-level">2</span></p>
-								<p class="info">Current Weapon: <span class="info-main info-weapon">Stick</span></p>
-							</div>
-						</div>
+				<div class="hero-profile flex-align flex-justify flex-column position-absolute">
+					<p class="info-name">Dragon Repeller</p>
+					<div class="profile-image-cover flex flex-align flex-justify">
+						<img src="assests/hero.png" aria-label="hero" class="profile-image" />
 					</div>
-					<div class="page-box position-absolute flex-align flex-justify">
-						<div class="page-item">
-							<p class="page-item-name">Health +10</p>
-							<img src="assests/health.png" aria-label="health" class="page-item-image" />
-							<p class="page-item-price">10 gold</p>
-						</div>
-						<div class="page-item">
-							<p class="page-item-name">Dagger</p>
-							<img src="assests/dagger.png" aria-label="dagger" class="page-item-image"/>
-							<p class="page-item-price">30 gold</p>
-						</div>
-						<div class="page-item">
-							<p class="page-item-name">Lucky Box</p>
-							<img src="assests/lucky.png" aria-label="lucky crate" class="page-item-image"/>
-							<p class="page-item-price">200 gold</p>
-						</div>
+					<div class="hero-info flex flex-justify flex-column">
+						<p class="info">Level: <span class="info-main info-level">2</span></p>
+						<p class="info">Current Weapon: <span class="info-main info-weapon">Stick</span></p>
 					</div>
-					<div class="inventory-box position-absolute flex-column">
-						<p class="inventory-info position-absolute">Inventory</p>
-						<p class="inventory-info-mark">?</p>
-						<p class="inventory-info-text info-text">
-							Weapons will automatically combined to upgrade to weapon of next tier when you acquired certain amount (NOTE: stick can't be upgraded).<br>
-							2 dagger -> 1 hammer<br>
-							3 hammer -> 1 iron sword<br>
-							4 iron sword -> 1 diamond sword<br>
-						</p>
-						<div class="inventory-weapons position-absolute">
-							<div class="weapons">
-								<img src="assests/stick.png" aria-label="stick" class="weapon-image">
-								<p class="weapon-name">Stick</p>
-								<p class="weapon-quanity weapon1-quanity">1</p>
-							</div>
-							<div class="weapons">
-								<img src="assests/dagger.png" aria-label="dagger" class="weapon-image">
-								<p class="weapon-name">Dagger</p>
-								<p class="weapon-quanity weapon2-quanity">0</p>
-							</div>
-							<div class="weapons">
-								<img src="assests/hammer.png" aria-label="hammer" class="weapon-image">
-								<p class="weapon-name">Hammer</p>
-								<p class="weapon-quanity weapon3-quanity">0</p>
-							</div>
-							<div class="weapons">
-								<img src="assests/iron.png" aria-label="iron sword" class="weapon-image">
-								<p class="weapon-name">Iron Sword</p>
-								<p class="weapon-quanity weapon4-quanity">0</p>
-							</div>
-							<div class="weapons">
-								<img src="assests/diamond.png" aria-label="diamond sword" class="weapon-image">
-								<p class="weapon-name">Diamond Sword</p>
-								<p class="weapon-quanity weapon5-quanity">0</p>
-							</div>
-						</div>
-					</div>
-					<div class="monster-stats flex-align flex-column flex-justify position-absolute">
-						<div class="monster-top flex flex-align">
-							<p class="monster-stat">Monster Name: <span class="monsterName">Slime Group</span></p>
-							<p class="monster-stat">level: <span class="monsterLevel">1</span></p>
-						</div>
-						<div class="monster-health position-relative">
-							<p class="monster-hp">45 / 45</p>
-							<div class="monster-progress"></div>
-						</div>
-					</div>
-					<div class="hero-health-stat position-absolute flex-align flex-justify">
-						<div class="hero-health">
-							<p class="hero-hp">100 / 100</p>
-							<div class="hero-progress"></div>
-						</div>
-					</div>
-					<div class="hero-stats flex flex-align position-fixed">
-						<div class="game-element-icon xp-icon position-relative">
-							<p class="game-element-text xp-info-text">
-								Increase <span class="xp-icon-text">Level</span> by getting <span class="xp-icon-text">xp</span> from monsters to improve your damage
-							</p>
-							<div class="icon-text-bg xp-progress-bar">
-								<span class="xpText">0</span>
-							</div>
-							<span class="levelText">1</span>
-						</div>
-						<div class="game-element-icon coin-icon position-relative">$
-							<p class="game-element-text gold-info-text">Use <span class="gold-icon-text">Gold</span> to purchase items from shop</p>
-							<div class="icon-text-bg">
-								<span class="goldText">50</span>
-							</div>
-						</div>
-						<div class="game-element-icon health-icon position-relative">+
-							<p class="game-element-text health-info-text">increase Max <span class="health-icon-text">Health</span> to increase HP of character</p>
-							<div class="icon-text-bg">
-								<span class="healthText">100</span>
-							</div>
-						</div>
-					</div>
-					<p class="dialog position-fixed">Welcome to Dragon Repeller. You must defeat the dragon that is preventing people from leaving the town. Use the buttons above to go somewhere.</p>
 				</div>
+				<div class="shop-page-box position-absolute">
+					<p class="shop-text position-absolute">Shop</p>
+					<div class="shop-page-box-cover position-absolute">
+						<div class="shop-page-item">
+							<p class="shop-page-item-name">HP Regen</p>
+							<img src="assests/healthRegen.png" aria-label="health" class="shop-page-item-image" />
+							<p class="shop-page-item-price">10 gold</p>
+						</div>
+						<div class="shop-page-item">
+							<p class="shop-page-item-name">Max HP +10</p>
+							<img src="assests/health.png" aria-label="health" class="shop-page-item-image" />
+							<p class="shop-page-item-price">20 gold</p>
+						</div>
+						<div class="shop-page-item">
+							<p class="shop-page-item-name">Dagger</p>
+							<img src="assests/dagger.png" aria-label="dagger" class="shop-page-item-image" />
+							<p class="shop-page-item-price">30 gold</p>
+						</div>
+						<div class="shop-page-item">
+							<p class="shop-page-item-name">Lucky Box</p>
+							<img src="assests/lucky.png" aria-label="lucky crate" class="shop-page-item-image" />
+							<p class="shop-page-item-price">200 gold</p>
+						</div>
+					</div>
+				</div>
+				<div class="page-box position-absolute flex-align flex-justify">
+					<div class="page-item">
+						<p class="page-item-name">Slime</p>
+						<img src="assests/health.png" aria-label="health" class="page-item-image" />
+						<p class="page-item-price">Level 2</p>
+					</div>
+					<div class="page-item">
+						<p class="page-item-name">Slime Group</p>
+						<img src="assests/dagger.png" aria-label="dagger" class="page-item-image" />
+						<p class="page-item-price">level 10</p>
+					</div>
+					<div class="page-item">
+						<p class="page-item-name">Beast</p>
+						<img src="assests/lucky.png" aria-label="lucky crate" class="page-item-image" />
+						<p class="page-item-price">Level 50</p>
+					</div>
+				</div>
+				<div class="inventory-box position-absolute flex-column">
+					<p class="inventory-info position-absolute">Inventory</p>
+					<p class="inventory-info-mark">?</p>
+					<p class="inventory-info-text info-text">
+						Weapons will automatically combined to upgrade to weapon of next tier when you acquired certain amount (NOTE:
+						stick can't be upgraded).<br>
+						2 dagger -> 1 hammer<br>
+						3 hammer -> 1 iron sword<br>
+						4 iron sword -> 1 diamond sword<br>
+					</p>
+					<div class="inventory-weapons position-absolute">
+						<div class="weapons">
+							<img src="assests/stick.png" aria-label="stick" class="weapon-image">
+							<p class="weapon-name">Stick</p>
+							<p class="weapon-quanity weapon1-quanity">1</p>
+						</div>
+						<div class="weapons">
+							<img src="assests/dagger.png" aria-label="dagger" class="weapon-image">
+							<p class="weapon-name">Dagger</p>
+							<p class="weapon-quanity weapon2-quanity">0</p>
+						</div>
+						<div class="weapons">
+							<img src="assests/hammer.png" aria-label="hammer" class="weapon-image">
+							<p class="weapon-name">Hammer</p>
+							<p class="weapon-quanity weapon3-quanity">0</p>
+						</div>
+						<div class="weapons">
+							<img src="assests/iron.png" aria-label="iron sword" class="weapon-image">
+							<p class="weapon-name">Iron Sword</p>
+							<p class="weapon-quanity weapon4-quanity">0</p>
+						</div>
+						<div class="weapons">
+							<img src="assests/diamond.png" aria-label="diamond sword" class="weapon-image">
+							<p class="weapon-name">Diamond Sword</p>
+							<p class="weapon-quanity weapon5-quanity">0</p>
+						</div>
+					</div>
+				</div>
+				<div class="monster-stats flex-align flex-column flex-justify position-absolute">
+					<div class="monster-top flex flex-align">
+						<p class="monster-stat">Monster Name: <span class="monsterName">Slime Group</span></p>
+						<p class="monster-stat">level: <span class="monsterLevel">1</span></p>
+					</div>
+					<div class="monster-health position-relative">
+						<p class="monster-hp">45 / 45</p>
+						<div class="monster-progress"></div>
+					</div>
+				</div>
+				<div class="hero-health-stat position-absolute flex-align flex-justify">
+					<div class="hero-health">
+						<p class="hero-hp">100 / 100</p>
+						<div class="hero-progress"></div>
+					</div>
+				</div>
+				<div class="hero-stats flex flex-align position-fixed">
+					<div class="game-element-icon xp-icon position-relative">
+						<p class="game-element-text xp-info-text">
+							Increase <span class="xp-icon-text">Level</span> by getting <span class="xp-icon-text">xp</span> from
+							monsters to improve your damage
+						</p>
+						<div class="icon-text-bg xp-progress-bar">
+							<span class="xpText">0</span>
+						</div>
+						<span class="levelText">1</span>
+					</div>
+					<div class="game-element-icon coin-icon position-relative">$
+						<p class="game-element-text gold-info-text">Use <span class="gold-icon-text">Gold</span> to purchase items from
+							shop</p>
+						<div class="icon-text-bg">
+							<span class="goldText">50</span>
+						</div>
+					</div>
+					<div class="game-element-icon health-icon position-relative">+
+						<p class="game-element-text health-info-text">increase Max <span class="health-icon-text">Health</span> to
+							increase HP of character</p>
+						<div class="icon-text-bg">
+							<span class="healthText">100</span>
+						</div>
+					</div>
+				</div>
+				<p class="dialog position-fixed">Welcome to Dragon Repeller. You must defeat the dragon that is preventing people from leaving the town. Use the buttons above to go somewhere.</p>
 			</div>
 		</div>
 		<div class="lucky-box width-height-100 flex-align flex-justify flex-column">

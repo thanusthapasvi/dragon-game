@@ -156,20 +156,103 @@ window.addEventListener("load", () => {
 });
 
 /* Main game Start */
+let gold;
+let xp;
+let level;
+let maxHealth;
+let health;
+let currentWeapon;
+let inventory;
 
-let xp = 0;
-let level = 1;
-let maxHealth = 100;
-let health = maxHealth;
-let gold = 50;
-let currentWeapon = 0;
+const weapons = [
+    { name: 'stick', power: 5 },
+    { name: 'dagger', power: 30 },
+    { name: 'hammer', power: 50 },
+    { name: 'iron sword', power: 100 },
+    { name: 'diamond sword', power: 120 }
+]; //for this down one
+const inventoryDefaultSave = [
+    {
+        name: weapons[0].name,
+        quantity: 1
+    },
+    {
+        name: weapons[1].name,
+        quantity: 0
+    },
+    {
+        name: weapons[2].name,
+        quantity: 0
+    },
+    {
+        name: weapons[3].name,
+        quantity: 0
+    },
+    {
+        name: weapons[4].name,
+        quantity: 0
+    }
+];
+function resetToDefaults() {
+    gold = 50;
+    xp = 0;
+    level = 1;
+    maxHealth = 100;
+    health = 100;
+    currentWeapon = 0;
+    inventory = structuredClone(inventoryDefaultSave);
+}
+resetToDefaults();
+
+const SAVE_KEY = "dragonGameSave";
+function getGameState() {
+    return {
+        gold,
+        xp,
+        level,
+        maxHealth,
+        health,
+        currentWeapon,
+        inventory
+    };
+}
+function saveGame() {
+    localStorage.setItem(SAVE_KEY, JSON.stringify(getGameState()));
+    console.log("saved Game Successfully");
+}
+function loadGame() {
+    try {
+        const raw = localStorage.getItem(SAVE_KEY);
+        if(!raw) {
+            resetToDefaults();
+            return;
+        }
+        const save = JSON.parse(raw);
+
+        gold = Number(save.gold) || 50;
+        xp = Number(save.xp) || 0;
+        level = Number(save.level) || 1;
+        maxHealth = Number(save.maxHealth) || 100;
+        health = Number(save.health) || 100;
+        currentWeapon = Number(save.currentWeapon) || 0;
+        inventory = Array.isArray(save.inventory) ? save.inventory.map(item => ({
+            name: item.name,
+            quantity: Math.max(item.name === "stick" ? 1 : 0, Number(item.quantity) || 0)
+        })) : structuredClone(inventoryDefaultSave);
+    } catch {
+        console.warn("Savee is goneeeeeeee");
+        localStorage.removeItem(SAVE_KEY);
+    }
+}
+loadGame(); //to load game and assign varirables
+
 let fighting;
 let monsterHealth;
 
 let isHeroOpen = false;
 let isInventoryOpen = false;
 
-let isButtonSoundEnabled = true;
+let buttonSoundEnabled = true;
 
 const gameHero = document.querySelector(".game");
 const gameLucky = document.querySelector(".lucky-box");
@@ -179,6 +262,7 @@ const dialog = document.querySelector(".dialog");
 const inventoryWindow = document.querySelector(".inventory-box");
 const heroImage = document.querySelector(".hero-image");
 const monsterImage = document.querySelector(".monster-image");
+const shopPageWindow = document.querySelector(".shop-page-box");
 const pageWindow = document.querySelector(".page-box");
 const heroWindow = document.querySelector(".hero-profile");
 
@@ -204,13 +288,14 @@ const monsterLevel = document.querySelector(".monsterLevel");
 const monsterDamageText = document.querySelector(".monster-damage");
 const heroDamageText = document.querySelector(".hero-damage");
 
-const weapons = [
-    { name: 'stick', power: 5 },
-    { name: 'dagger', power: 30 },
-    { name: 'hammer', power: 50 },
-    { name: 'iron sword', power: 100 },
-    { name: 'diamond sword', power: 120 }
-];
+function textUpdates() {
+    goldText.innerText = gold;
+    xpText.innerText = xp;
+    levelText.innerText = level;
+    healthText.innerText = maxHealth;
+}
+textUpdates();
+
 const monsters = [
     {
         name: "slime",
@@ -300,28 +385,6 @@ const locations = [
         bg: "url('assests/battle.jpg')"
     }
 ];
-const inventory = [
-    {
-        name: weapons[0].name,
-        quantity: 1
-    },
-    {
-        name: weapons[1].name,
-        quantity: 0
-    },
-    {
-        name: weapons[2].name,
-        quantity: 0
-    },
-    {
-        name: weapons[3].name,
-        quantity: 0
-    },
-    {
-        name: weapons[4].name,
-        quantity: 0
-    }
-];
 function bestWeapon() {
     let best = 0;
     for (let i = inventory.length - 1; i >= 0; i--) {
@@ -340,8 +403,12 @@ button2.onclick = goCave;
 button3.onclick = fightDragon;
 
 function update(location) {
-    isHeroOpen = false;
-    isInventoryOpen = false;
+    if(isHeroOpen) {
+        isHeroOpen = false;
+    } else if(isInventoryOpen) {
+        isInventoryOpen = false;
+    }
+
     monsterStats.style.display = "none";
     heroHealth.style.display = "none";
     inventoryWindow.style.display = "none";
@@ -356,16 +423,19 @@ function update(location) {
     bag.classList.remove('active-tab');
     game.style.background = location["bg"];
 
-    buttonSoundEnabled = true;
-
     if (location.name == "shop") {
-        pageWindow.style.display = "flex";
-        shopAndMonsters("shop");
+        shopPageWindow.classList.remove('floating-ani');
+        shopPageWindow.style.display = "block";
+        shopPage();
+        setTimeout(() => {
+            shopPageWindow.classList.add('floating-ani');
+        }, 500);
     } else if (location.name == "cave") {
         pageWindow.style.display = "flex";
-        shopAndMonsters("monsters");
+        monstersPage();
     } else {
         pageWindow.style.display = "none";
+        shopPageWindow.style.display = "none";
     }
 
     button1.innerText = location["button text"][0];
@@ -375,25 +445,24 @@ function update(location) {
     button2.onclick = location["button functions"][1];
     button3.onclick = location["button functions"][2];
     dialog.innerHTML = location.text;
+    saveGame();
 }
-const shopAndMonsterPage = [
-    {
-        name: "shop",
-        p1: "Buy health",
-        p2: "Buy dagger",
-        p3: "Lucky Box",
-        f1: buyHealth,
-        f2: buyWeapon,
-        f3: buyLucky,
-        img1: "assests/health.png",
-        img2: "assests/dagger.png",
-        img3: "assests/lucky.png",
-        P1: "10 gold",
-        P2: "30 gold",
-        P3: "200 gold"
-    }
-]
-function shopAndMonsters(page) {
+function shopPage() {
+    const shopPageTiles = document.querySelectorAll('.shop-page-item');
+    shopPageTiles.forEach(tile => {
+        tile.classList.add('appear');
+    });
+    setTimeout(() => {
+        shopPageTiles.forEach(tile => {
+            tile.classList.remove('appear');
+        });
+    }, 400);
+    shopPageTiles[0].onclick = buyHealthRegen;
+    shopPageTiles[1].onclick = buyHealth;
+    shopPageTiles[2].onclick = buyWeapon;
+    shopPageTiles[3].onclick = buyLucky;
+}
+function monstersPage() {
     const pageTiles = document.querySelectorAll('.page-item');
     const p1s = document.querySelectorAll('.page-item-name');
     const p2s = document.querySelectorAll('.page-item-price');
@@ -406,36 +475,23 @@ function shopAndMonsters(page) {
             tile.classList.remove('appear');
         });
     }, 400);
-    if(page === "monsters") {
-        p1s[0].innerText = monsters[0].name;
-        p1s[1].innerText = monsters[1].name;
-        p1s[2].innerText = monsters[2].name;
-        p2s[0].innerText = "level " + monsters[0].level;
-        p2s[1].innerText = "level " + monsters[1].level;
-        p2s[2].innerText = "level " + monsters[2].level;
-        imgs[0].src = monsters[0].image;
-        imgs[1].src = monsters[1].image;
-        imgs[2].src = monsters[2].image;
-        pageTiles[0].onclick = fightSlime;
-        pageTiles[1].onclick = fightSlimeGroup;
-        pageTiles[2].onclick = fightBeast;
-    } else if(page === "shop") {
-        p1s[0].innerText = shopAndMonsterPage[0].p1;
-        p1s[1].innerText = shopAndMonsterPage[0].p2;
-        p1s[2].innerText = shopAndMonsterPage[0].p3;
-        p2s[0].innerText = shopAndMonsterPage[0].P1;
-        p2s[1].innerText = shopAndMonsterPage[0].P2;
-        p2s[2].innerText = shopAndMonsterPage[0].P3;
-        imgs[0].src = shopAndMonsterPage[0].img1;
-        imgs[1].src = shopAndMonsterPage[0].img2;
-        imgs[2].src = shopAndMonsterPage[0].img3;
-        pageTiles[0].onclick = shopAndMonsterPage[0].f1;
-        pageTiles[1].onclick = shopAndMonsterPage[0].f2;
-        pageTiles[2].onclick = shopAndMonsterPage[0].f3;
-    }
+
+    p1s[0].innerText = monsters[0].name;
+    p1s[1].innerText = monsters[1].name;
+    p1s[2].innerText = monsters[2].name;
+    p2s[0].innerText = "level " + monsters[0].level;
+    p2s[1].innerText = "level " + monsters[1].level;
+    p2s[2].innerText = "level " + monsters[2].level;
+    imgs[0].src = monsters[0].image;
+    imgs[1].src = monsters[1].image;
+    imgs[2].src = monsters[2].image;
+    pageTiles[0].onclick = fightSlime;
+    pageTiles[1].onclick = fightSlimeGroup;
+    pageTiles[2].onclick = fightBeast;
 }
 function goTown() {
     playTeleportAudio();
+    buttonSoundEnabled = false;
     update(locations[0]);
 }
 
@@ -446,29 +502,30 @@ function goShop() {
 }
 
 function goCave() {
-    playTeleportAudio()
+    playTeleportAudio();
     update(locations[2]);
 }
 
 function fightSlime() {
     fighting = 0;
-    fightTimeOut()
+    fightTimeOut();
 }
 function fightSlimeGroup() {
     fighting = 1;
-    fightTimeOut()
+    fightTimeOut();
 }
 function fightBeast() {
     fighting = 2;
-    fightTimeOut()
+    fightTimeOut();
 }
 function fightDragon() {
     fighting = 3;
-    fightTimeOut()
+    fightTimeOut();
 }
 
 function fightTimeOut() {
     //to play animation of bounse for page tiles in cave
+    buttonSoundEnabled = true;
     setTimeout(() => {
         goFight();
     }, 400);
@@ -477,6 +534,7 @@ function fightTimeOut() {
 function openInventory() {
     goTown();
     updateInventory();
+    isHeroOpen = false;
     if (isInventoryOpen) {
         inventoryWindow.style.display = "none";
         bag.classList.remove('active-tab');
@@ -497,6 +555,7 @@ let heroFirst = true;
 function openHero() {
     goTown();
     updateHero();
+    isInventoryOpen = false
     if (isHeroOpen) {
         heroWindow.style.display = "none";
         hero.classList.remove('active-tab');
@@ -505,11 +564,11 @@ function openHero() {
     } else {
         heroWindow.classList.remove('floating-ani');
         heroWindow.style.display = "flex";
+        isHeroOpen = true;
         hero.classList.add('active-tab');
         setTimeout(() => {
             heroWindow.classList.add('floating-ani');
         }, 500);
-        isHeroOpen = true;
         if (!heroFirst)
             dialog.style.display = "none";
     }
@@ -537,43 +596,62 @@ function updateInventory() {
             weaponHighlight[i].classList.remove("current-weapon-highlight");
         }
     }
+    saveGame();
 }
 function updateHero() {
     updateLevel();
     heroWeaponText.innerText = weapons[currentWeapon].name;
 }
+
+function buyHealthRegen() {
+    if(health != maxHealth) {
+        if(gold >= 10) {
+            playBuySuccessAudio();
+            const prevGold = gold;
+            gold -= 10;
+            health = maxHealth;
+            animateNumber(goldText, prevGold, gold);
+            iconsPulse("coinIcon");
+            saveGame();
+        } else {
+            playBuyFailAudio();
+            dialog.innerText = "You do not have enough gold to buy health regen.";
+        }
+    } else {
+        playBuyFailAudio();
+        dialog.innerText = "You already have full health";
+    }
+}
 function buyHealth() {
-    if (gold >= 10) {
+    if (gold >= 20) {
         playBuySuccessAudio();
         const prevHealth = maxHealth;
         const prevGold = gold;
-        gold -= 10;
+        gold -= 20;
         maxHealth += 10;
         health = maxHealth;
-        // goldText.innerText = gold;
         animateNumber(goldText, prevGold, gold);
         iconsPulse("coinIcon");
-        // healthText.innerText = maxHealth;
         animateNumber(healthText, prevHealth, maxHealth);
         iconsPulse("healthIcon");
+        saveGame();
     } else {
         playBuyFailAudio();
-        dialog.innerText = "You do not have enough gold to buy health.";
+        dialog.innerText = "You do not have enough gold to buy max health.";
     }
 }
-
 function buyWeapon() {
     if (gold >= 30) {
         playBuySuccessAudio();
         const prevGold = gold;
         gold -= 30;
-        // goldText.innerText = gold;
         animateNumber(goldText, prevGold, gold);
         iconsPulse("coinIcon");
         let newWeapon = weapons[1].name;
         dialog.innerText = "You now have a " + newWeapon + ".";
         addWeapon(newWeapon);
         dialog.innerText += " inventory updated ";
+        saveGame();
     } else {
         playBuyFailAudio();
         dialog.innerText = "You do not have enough gold to buy a weapon.";
@@ -595,9 +673,10 @@ function buyLucky() {
 }
 function addWeapon(name) {
     const item = inventory.find(i => i.name === name);
-    if (item)
+    if (item) {
         item.quantity++;
-    else
+        saveGame();
+    } else
         console.log("Error adding weapon");
 
     upgradeWeapons();
@@ -620,9 +699,10 @@ function upgradeWeapons() {
         item4.quantity++;
     }
     currentWeapon = bestWeapon();
+    saveGame();
 }
 function goFight() {
-    buttonSoundEnabled = false;
+    buttonSoundEnabled = true;
     update(locations[3]);
     monsterHealth = monsters[fighting].health;
     monsterStats.style.display = "flex";
@@ -719,14 +799,13 @@ function defeatMonster() {
     const prevXp = xp;
     gold += Math.floor(monsters[fighting].level * 6.7);
     xp += monsters[fighting].level;
-    // goldText.innerText = gold;
     animateNumber(goldText, prevGold, gold);
     iconsPulse("coinIcon");
-    // xpText.innerText = xp;
     animateNumber(xpText, prevXp, xp);
     iconsPulse("xpIcon");
     updateLevel();
     update(locations[4]);
+    saveGame();
 }
 function updateLevel() {
     const xpProgressBar = document.querySelector(".xp-progress-bar");
@@ -747,6 +826,7 @@ function updateLevel() {
     xpProgressBar.style.background = `linear-gradient(to right, var(--gold) 0%, var(--gold) ${xpPercent}%, var(--dialog-bg) ${xpPercent}%, var(--dialog-bg) 100%)`;
     levelText.innerText = level;
     heroLevelText.innerText = level;
+    saveGame();
 }
 
 function lose() {
@@ -760,37 +840,8 @@ function winGame() {
 }
 
 function restart() {
-    xp = 0;
-    maxHealth = 100;
-    health = maxHealth;
-    gold = 50;
-    currentWeapon = 0;
-    const inventory = [
-        {
-            name: weapons[0].name,
-            quantity: 1
-        },
-        {
-            name: weapons[1].name,
-            quantity: 0
-        },
-        {
-            name: weapons[2].name,
-            quantity: 0
-        },
-        {
-            name: weapons[3].name,
-            quantity: 0
-        },
-        {
-            name: weapons[4].name,
-            quantity: 0
-        }
-    ];
-    goldText.innerText = gold;
-    healthText.innerText = health;
-    xpText.innerText = xp;
-    goTown();
+    localStorage.removeItem(SAVE_KEY);
+    location.reload();
 }
 
 /* Lucky Block Start*/
@@ -858,7 +909,7 @@ function luckResult(rarity) {
 /* Lucky Block End*/
 
 /* Animations and Visuals */
-document.querySelectorAll('.top-buttons, .bottom-buttons, .page-item')
+document.querySelectorAll('.top-buttons, .bottom-buttons, .page-item, .shop-page-item')
 .forEach(btn => {
     btn.addEventListener('click', () => {
         btn.classList.add('bounce-animation');
@@ -896,6 +947,7 @@ document.querySelectorAll(".game-element-icon").forEach(icon => {
 });
 
 function animateNumber(textElement, start, end) {
+    // to animate and also to update text
 	let startTime = null;
     const duration = 400;
 	function tick(time) {
@@ -904,11 +956,9 @@ function animateNumber(textElement, start, end) {
 		textElement.innerText = Math.floor(start + (end - start) * progress);
 		if (progress < 1) requestAnimationFrame(tick);
 	}
-
+    saveGame();
 	requestAnimationFrame(tick);
 }
-
-
 
 //audio
 document.querySelectorAll('.top-buttons, .bottom-buttons')
