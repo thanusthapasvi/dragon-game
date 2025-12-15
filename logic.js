@@ -344,15 +344,15 @@ const locations = [
     },
     {
         name: "shop",
-        "button text": ["health", "dagger", "Lucky Box"],
-        "button functions": [buyHealth, buyWeapon, buyLucky],
+        "button text": ["Town", "Cave", "Dragon"],
+        "button functions": [goTown, goCave, fightDragon],
         text: "You enter the shop.",
         bg: "url('assests/shop.jpg')"
     },
     {
         name: "cave",
-        "button text": ["slime", "slime group", "beast"],
-        "button functions": [fightSlime, fightSlimeGroup, fightBeast],
+        "button text": ["Shop", "Town", "Dragon"],
+        "button functions": [goShop, goTown, fightDragon],
         text: "You enter the cave. You see some monsters.",
         bg: "url('assests/cave.png')"
     },
@@ -465,7 +465,7 @@ function shopPage() {
 function monstersPage() {
     const pageTiles = document.querySelectorAll('.page-item');
     const p1s = document.querySelectorAll('.page-item-name');
-    const p2s = document.querySelectorAll('.page-item-price');
+    const p2s = document.querySelectorAll('.page-item-level');
     const imgs = document.querySelectorAll('.page-item-image');
     pageTiles.forEach(tile => {
         tile.classList.add('appear');

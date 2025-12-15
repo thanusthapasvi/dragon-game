@@ -621,46 +621,11 @@ main {
 	text-align: center;
 }
 
+/* monster and shop page */
+/* monster page */
 .page-box, .shop-page-box {
 	left: 50%;
 	display: none;
-}
-.page-item, .shop-page-item {
-	width: 100px;
-	height: 120px;
-	background-color: var(--accent-2);
-	position: relative;
-	padding: 0.5rem;
-	border-radius: 8px;
-	box-shadow: -2px 3px black;
-	cursor: pointer;
-	overflow: hidden;
-	transition: transform 0.2s ease;
-}
-.page-item-image, .shop-page-item-image {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 100px;
-	height: auto;
-}
-.page-item-name, .page-item-price, .shop-page-item-name, .shop-page-item-price {
-	position: absolute;
-	font-size: 1.1rem;
-	color: white;
-	background-color: var(--accent-text);
-	width: 100px;
-	text-align: center;
-	z-index: 10;
-}
-.page-item-name, .shop-page-item-name {
-	top: 0;
-	left: 0;
-}
-.page-item-price, .shop-page-item-price {
-	left: 0;
-	bottom: 0;
 }
 .page-box {
 	top: 50%;
@@ -672,6 +637,55 @@ main {
 	gap: 1rem;
 	border-radius: 12px;
 }
+.page-item {
+	width: 100px;
+	height: 120px;
+	background-color: var(--accent-2);
+	position: relative;
+	padding: 0.5rem;
+	border-radius: 8px;
+	border: 2px solid var(--accent-shadow);
+	box-shadow: 0 0 1px 1px black;
+	cursor: pointer;
+	overflow: hidden;
+	transition: all 0.2s ease;
+}
+.page-item-image {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 100px;
+	height: auto;
+}
+.page-item-name, .page-item-level {
+	position: absolute;
+	font-size: 1.1rem;
+	text-align: center;
+	color: white;
+	z-index: 10;
+	width: 100px;
+}
+.page-item-name {
+	top: 3px;
+	left: 0;
+}
+.page-item-level {
+	left: 0;
+	bottom: 0;
+	background-color: var(--accent-text);
+}
+.page-box {
+	top: 50%;
+	width: 340px;
+	height: 140px;
+	padding: 0.5rem;
+	transform: translate(-50%, -50%);
+	background-color: var(--accent);
+	gap: 1rem;
+	border-radius: 12px;
+}
+/* shop */
 .shop-page-box {
 	top: 0%;
 	width: 340px;
@@ -696,6 +710,46 @@ main {
 	display: grid;
 	grid-template-columns: repeat(2, auto);
 	gap: 1rem;
+}
+.shop-page-item {
+	width: 100px;
+	height: 120px;
+	background-color: var(--accent-2);
+	position: relative;
+	padding: 0.5rem;
+	border-radius: 8px;
+	border: 2px solid var(--accent-shadow);
+	box-shadow: 0 0 1px 1px black;
+	cursor: pointer;
+	transition: transform 0.2s ease;
+}
+.shop-page-item-image {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 100px;
+	height: auto;
+}
+.shop-page-item-name, .shop-page-item-price {
+	position: absolute;
+	font-size: 1.1rem;
+	text-align: center;
+	color: white;
+	z-index: 10;
+}
+.shop-page-item-name {
+	top: 3px;
+	left: 0;
+	width: 100px;
+}
+.shop-page-item-price {
+	width: 75px;
+	border-radius: 999px;
+	left: 50%;
+	bottom: 0;
+	background-color: var(--accent-text);
+	transform: translate(-50%, 50%);
 }
 /* Lucky Block Start*/
 .lucky-box {
