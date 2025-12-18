@@ -1,4 +1,7 @@
 /* 3D Objects containers */
+/* Main Game Window */
+const game = document.querySelector(".game-window");
+
 /* Lucky Box */
 const giftContainer = document.querySelector(".box");
 
@@ -6,19 +9,180 @@ const giftContainer = document.querySelector(".box");
 const monsterContainer = document.querySelector(".monster-container");
 
 /* 3D setup */
-const scene = new THREE.Scene();
-const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 const loader = new THREE.GLTFLoader();
-/* using renderer.setSize() in functions for reuse. */
+// for world
+const worldScene = new THREE.Scene();
+worldScene.background = new THREE.Color(0x000000);
 
+const gameWidth = game.clientWidth;
+const gameHeight = game.clientHeight;
+
+const worldCamera = new THREE.PerspectiveCamera(60, gameWidth / gameHeight, 0.1, 100);
+worldCamera.position.set(0, 2, 1.9);
+const worldRenderer = new THREE.WebGLRenderer({ antialias: true });
+worldRenderer.setSize(gameWidth, gameHeight);
+game.appendChild(worldRenderer.domElement);
+
+const world = new THREE.Group();
+worldScene.add(world);
+
+// world lights
+worldScene.add(new THREE.AmbientLight(0xffffff, 0.4));
+
+const sun = new THREE.DirectionalLight(0xffffff, 0.8);
+sun.position.set(0, 2.5, 2);
+worldScene.add(sun);
+
+const moon = new THREE.DirectionalLight(0xffffff, 0.3);
+moon.position.set(0, 2.5, 2);
+worldScene.add(moon);
+
+const shopLight1 = new THREE.PointLight(0xffaa33, 3, 5); // color, intensity, distance
+shopLight1.position.set(0, 2.5, -11.5);
+world.add(shopLight1);
+const shopLight2 = new THREE.PointLight(0xffaa33, 2, 2);
+shopLight2.position.set(-1, 0.5, -11.3);
+world.add(shopLight2);
+const shopLight3 = new THREE.PointLight(0xffaa33, 2, 2);
+shopLight3.position.set(1, 0.5, -11.3);
+world.add(shopLight3);
+const shopLight4 = new THREE.PointLight(0xffffff, 3, 5);
+shopLight4.position.set(-3, 1, -9);
+world.add(shopLight4);
+const shopLight5 = new THREE.PointLight(0xffffff, 3, 5);
+shopLight5.position.set(3, 1, -9);
+world.add(shopLight5);
+
+const dragonLight1 = new THREE.PointLight(0xff33ff, 10, 0.5);
+dragonLight1.position.set(10, 2.5, 5.1);
+world.add(dragonLight1);
+const dragonLight2 = new THREE.PointLight(0xff33ff, 10, 0.5);
+dragonLight2.position.set(9.5, 2.5, 6);
+world.add(dragonLight2);
+const dragonLight3 = new THREE.PointLight(0xff33ff, 10, 5);
+dragonLight3.position.set(6, 2.5, 5);
+world.add(dragonLight3);
+const dragonLight4 = new THREE.PointLight(0xff33ff, 5, 5);
+dragonLight4.position.set(9, 3, 3);
+world.add(dragonLight4);
+
+// loading world model
+loader.load(
+    "models/gameWorld.glb",
+    (gltf) => {
+        const model = gltf.scene;
+        model.position.set(0, 0, 0);
+        console.log("WORLD LOADED", model);
+        world.add(model);
+
+        setupTorches(model);
+    },
+    undefined,
+    (err) => console.error("WORLD ERROR", err)
+);
+//torches
+function setupTorches(root) {
+    const torchNames = ["torch1", "torch2", "torch3"];
+
+    torchNames.forEach((name) => {
+        const torch = root.getObjectByName(name);
+        if (torch) {
+            createTorchFire(torch);
+        } else {
+            console.warn(`Torch not found: ${name}`);
+        }
+    });
+}
+const torchFires = [];
+
+function createTorchFire(torchEmpty) {
+    const fireLight = new THREE.PointLight(0xffaa33, 2.5, 6);
+    fireLight.position.set(0, 0.5, 0); // EMPTY origin
+    torchEmpty.add(fireLight);
+
+    //   const lightHelper = new THREE.PointLightHelper(fireLight, 0.2);
+    // scene.add(lightHelper);
+
+    const fireTex = new THREE.TextureLoader().load("assests/fire.png");
+    const fireMat = new THREE.SpriteMaterial({
+        map: fireTex,
+        transparent: true
+    });
+
+    const fire = new THREE.Sprite(fireMat);
+    fire.scale.set(2, 2, 2);
+    fire.position.set(0, 0, 0); // EXACTLY at EMPTY
+    torchEmpty.add(fire);
+
+    torchFires.push({ fireLight, fire });
+}
+
+//rotation and navigation
+let targetRotation = 0;
+const mainButton = document.querySelector(".main-button");
+mainButton.onclick = goShop;
+const leftButton = document.querySelector(".left-button");
+const rightButton = document.querySelector(".right-button");
+
+function rotateWorld(direction) {
+    if (direction === "left") {
+        if (Math.abs(targetRotation - THREE.MathUtils.degToRad(0)) < 0.001)
+            targetRotation = THREE.MathUtils.degToRad(-120);
+        else if (Math.abs(targetRotation - THREE.MathUtils.degToRad(120)) < 0.001)
+            targetRotation = THREE.MathUtils.degToRad(0);
+        else if (Math.abs(targetRotation - THREE.MathUtils.degToRad(-120)) < 0.001)
+            targetRotation = THREE.MathUtils.degToRad(120);
+    }
+    else if (direction === "right") {
+        if (Math.abs(targetRotation - THREE.MathUtils.degToRad(0)) < 0.001)
+            targetRotation = THREE.MathUtils.degToRad(120);
+        else if (Math.abs(targetRotation - THREE.MathUtils.degToRad(120)) < 0.001)
+            targetRotation = THREE.MathUtils.degToRad(-120);
+        else if (Math.abs(targetRotation - THREE.MathUtils.degToRad(-120)) < 0.001)
+            targetRotation = THREE.MathUtils.degToRad(0);
+    }
+    navigate();
+}
+window.addEventListener("keydown", (e) => {
+    if (e.key.toLowerCase() === "a") rotateWorld("left");
+    if (e.key.toLowerCase() === "d") rotateWorld("right");
+});
+leftButton.addEventListener("click", () => {
+    closeAll();
+    rotateWorld("left");
+});
+rightButton.addEventListener("click", () => {
+    closeAll();
+    rotateWorld("right");
+});
+
+function closeAll() {
+    isShopOpen = true;
+    goShop();
+    isHeroOpen = true;
+    openHero();
+    isInventoryOpen = true;
+    openInventory();
+    pageWindow.style.display = "none";
+}
+
+//resize
+window.addEventListener("resize", () => {
+    worldCamera.aspect = game.clientWidth / game.clientHeight;
+    worldCamera.updateProjectionMatrix();
+    worldRenderer.setSize(game.clientWidth, game.clientHeight);
+});
+
+// for monsters and gift box
+const scene = new THREE.Scene(); // for monsters and giftbox
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+/* using renderer.setSize() in functions for reuse. */
 const light = new THREE.DirectionalLight(0xffffff, 0.5);
 light.position.set(-0.5, -0.5, 2);
 scene.add(light);
-
 const light2 = new THREE.DirectionalLight(0xffffff, 0.5);
 light2.position.set(0.5, 0.5, 2);
 scene.add(light2);
-
 scene.add(new THREE.AmbientLight(0xffffff, 0.5));
 
 /* Camera and attaching to conatineer (gift) or Monster container */
@@ -108,6 +272,16 @@ let lidState = 0;
 let t = 0;
 function animate() {
     requestAnimationFrame(animate);
+
+    // world aniamtions
+    world.rotation.y += (targetRotation - world.rotation.y) * 0.1;
+
+    torchFires.forEach(({ fireLight, fire }) => {
+        fireLight.intensity = 2.5 + Math.random() * 0.6;
+        fire.scale.y = 1 + Math.sin(Date.now() * 0.015) * 0.1;
+    });
+
+    // gift box animations
     if (lidState === 1) {
         // Opening
         t += 0.05;
@@ -124,21 +298,25 @@ function animate() {
         if (t <= 0) lidState = 0;
         gift.rotation.y += 0.25;
     }
+
+    // monster (Slime) aniations
     if(monster) {
         const t = performance.now() * 0.002;
 
         const s = 1 + Math.sin(t * 2) * 0.04;
         const base = monster.userData.baseScale;
-
         monster.scale.set(
             base.x * s,
             base.y * (1 - (s - 1)),
             base.z * s
         );
     }
+
     if (activeCamera && renderer.domElement.parentNode) {
         renderer.render(scene, activeCamera);
     }
+
+    worldRenderer.render(worldScene, worldCamera);
 }
 animate();
 function playLidAnimation() {
@@ -200,6 +378,7 @@ function resetToDefaults() {
     maxHealth = 100;
     health = 100;
     currentWeapon = 0;
+    currentHero = 0;
     inventory = structuredClone(inventoryDefaultSave);
 }
 resetToDefaults();
@@ -213,6 +392,7 @@ function getGameState() {
         maxHealth,
         health,
         currentWeapon,
+        currentHero,
         inventory
     };
 }
@@ -235,6 +415,7 @@ function loadGame() {
         maxHealth = Number(save.maxHealth) || 100;
         health = Number(save.health) || 100;
         currentWeapon = Number(save.currentWeapon) || 0;
+        currentHero = Number(save.currentHero) || 0;
         inventory = Array.isArray(save.inventory) ? save.inventory.map(item => ({
             name: item.name,
             quantity: Math.max(item.name === "stick" ? 1 : 0, Number(item.quantity) || 0)
@@ -257,7 +438,6 @@ let buttonSoundEnabled = true;
 const gameHero = document.querySelector(".game");
 const gameLucky = document.querySelector(".lucky-box");
 
-const game = document.querySelector(".game-window");
 const dialog = document.querySelector(".dialog");
 const inventoryWindow = document.querySelector(".inventory-box");
 const heroImage = document.querySelector(".hero-image");
@@ -270,23 +450,28 @@ const heroLevelText = document.querySelector(".info-level");
 const heroWeaponText = document.querySelector(".info-weapon");
 
 const back = document.querySelector('.top-button1');
-const bag = document.querySelector('.top-button2');
-const hero = document.querySelector('.top-button3');
-const button1 = document.querySelector('.bottom-button1');
-const button2 = document.querySelector(".bottom-button2");
-const button3 = document.querySelector(".bottom-button3");
+const shop = document.querySelector('.top-button2');
+const bag = document.querySelector('.top-button3');
+const hero = document.querySelector('.top-button4');
 
-const monsterStats = document.querySelector(".monster-stats");
+const monsterStats = document.querySelector(".monster-battle-stats");
 const goldText = document.querySelector(".goldText");
 const xpText = document.querySelector(".xpText");
 const levelText = document.querySelector(".levelText");
 const healthText = document.querySelector(".healthText");
-const heroHealth = document.querySelector(".hero-health-stat");
+const heroBattleStats = document.querySelector(".hero-battle-stats");
 const monsterName = document.querySelector(".monsterName");
 const monsterLevel = document.querySelector(".monsterLevel");
 
 const monsterDamageText = document.querySelector(".monster-damage");
 const heroDamageText = document.querySelector(".hero-damage");
+const energyBox = document.querySelector(".energy-box");
+
+const energyFlow = document.querySelector(".energy-flow-box");
+let energy = 0;
+const MAX_ENERGY = 100;
+const REFILL_RATE = 0.008;
+let lastTime = performance.now();
 
 function textUpdates() {
     goldText.innerText = gold;
@@ -334,55 +519,64 @@ const monsters = [
         scaleZ: 0.75
     }
 ]
+const heroSkills = [
+    {
+        skillId: 0,
+        name: "Sword Slash",
+        energyCost: 20,
+        power: 15
+    },
+    {
+        skillId: 1,
+        name: "Energy Slash",
+        energyCost: 40,
+        power: 50
+    }
+]
+const heros = [
+    {
+        name: "dragon repeller",
+        normalSkill: 0,
+        energySkill: 1,
+        attackPower: 50
+    }
+]
 const locations = [
     {
         name: "Hero",
-        "button text": ["Shop", "Cave", "Dragon"],
-        "button functions": [goShop, goCave, fightDragon],
         text: "You are in the town. You see a sign that says \"Store\".",
-        bg: "url('assests/town.jpg')"
-    },
-    {
-        name: "shop",
-        "button text": ["Town", "Cave", "Dragon"],
-        "button functions": [goTown, goCave, fightDragon],
-        text: "You enter the shop.",
-        bg: "url('assests/shop.jpg')"
+        bg: "url('assests/town.jpg')",
+        rotation: 0
     },
     {
         name: "cave",
-        "button text": ["Shop", "Town", "Dragon"],
-        "button functions": [goShop, goTown, fightDragon],
         text: "You enter the cave. You see some monsters.",
-        bg: "url('assests/cave.png')"
+        bg: "url('assests/cave.png')",
+        rotation: -120
     },
     {
         name: "fight",
-        "button text": ["Attack", "Dodge", "Run"],
-        "button functions": [attack, dodge, goTown],
         text: "You are fighting a monster.",
-        bg: "url('assests/battle.jpg')"
+        bg: "url('assests/battle.jpg')",
+        rotation: -120
     },
     {
         name: "kill monster",
-        "button text": ["Shop", "Cave", "Town"],
-        "button functions": [goShop, goCave, goTown],
         text: 'The monster screams "Arg!" as it dies. You gain experience points and find gold.',
-        bg: "url('assests/battle.jpg')"
+        bg: "url('assests/battle.jpg')",
+        rotation: -120
     },
     {
         name: "lose",
-        "button text": ["REPLAY?", "REPLAY?", "REPLAY?"],
-        "button functions": [restart, restart, restart],
         text: "Game Over. You die. &#x2620;",
-        bg: "url('assests/battle.jpg')"
+        bg: "url('assests/battle.jpg')",
+        rotation: -120
     },
     {
         name: "win",
-        "button text": ["REPLAY?", "REPLAY?", "REPLAY?"],
-        "button functions": [restart, restart, restart],
         text: "You defeat the dragon! YOU WIN THE GAME! &#x1F389;",
-        bg: "url('assests/battle.jpg')"
+        bg: "url('assests/battle.jpg')",
+        rotation: -120
     }
 ];
 function bestWeapon() {
@@ -398,19 +592,10 @@ function bestWeapon() {
 }
 currentWeapon = bestWeapon();
 back.onclick = goTown;
-button1.onclick = goShop;
-button2.onclick = goCave;
-button3.onclick = fightDragon;
 
 function update(location) {
-    if(isHeroOpen) {
-        isHeroOpen = false;
-    } else if(isInventoryOpen) {
-        isInventoryOpen = false;
-    }
-
     monsterStats.style.display = "none";
-    heroHealth.style.display = "none";
+    heroBattleStats.style.display = "none";
     inventoryWindow.style.display = "none";
     heroWindow.style.display = "none";
     heroImage.style.display = "none";
@@ -419,50 +604,25 @@ function update(location) {
     heroDamageText.style.display = "none";
     monsterDamageText.style.display = "none";
     dialog.style.display = "block";
+    shop.classList.remove("active-tab");
     hero.classList.remove('active-tab');
     bag.classList.remove('active-tab');
     game.style.background = location["bg"];
+    energyBox.style.display = "none";
 
-    if (location.name == "shop") {
-        pageWindow.style.display = "none";
-        shopPageWindow.classList.remove('floating-ani');
-        shopPageWindow.style.display = "block";
-        shopPage();
-        setTimeout(() => {
-            shopPageWindow.classList.add('floating-ani');
-        }, 500);
-    } else if (location.name == "cave") {
-        shopPageWindow.style.display = "none";
+    if (location.name == "cave") {
         pageWindow.style.display = "flex";
         monstersPage();
     } else {
         pageWindow.style.display = "none";
         shopPageWindow.style.display = "none";
     }
-
-    button1.innerText = location["button text"][0];
-    button2.innerText = location["button text"][1];
-    button3.innerText = location["button text"][2];
-    button1.onclick = location["button functions"][0];
-    button2.onclick = location["button functions"][1];
-    button3.onclick = location["button functions"][2];
+    
+    if(location.name == "fight") {
+        energy = 0;
+    }
     dialog.innerHTML = location.text;
     saveGame();
-}
-function shopPage() {
-    const shopPageTiles = document.querySelectorAll('.shop-page-item');
-    shopPageTiles.forEach(tile => {
-        tile.classList.add('appear');
-    });
-    setTimeout(() => {
-        shopPageTiles.forEach(tile => {
-            tile.classList.remove('appear');
-        });
-    }, 400);
-    shopPageTiles[0].onclick = buyHealthRegen;
-    shopPageTiles[1].onclick = buyHealth;
-    shopPageTiles[2].onclick = buyWeapon;
-    shopPageTiles[3].onclick = buyLucky;
 }
 function monstersPage() {
     const pageTiles = document.querySelectorAll('.page-item');
@@ -497,15 +657,48 @@ function goTown() {
     update(locations[0]);
 }
 
+let isShopOpen = false;
 function goShop() {
-    playTeleportAudio();
+    goTown();
     buttonSoundEnabled = false;
-    update(locations[1]);
+    // update(locations[1]);
+
+    const shopPageTiles = document.querySelectorAll('.shop-page-item');
+    shopPageTiles[0].onclick = buyHealthRegen;
+    shopPageTiles[1].onclick = buyHealth;
+    shopPageTiles[2].onclick = buyWeapon;
+    shopPageTiles[3].onclick = buyLucky;
+
+    isHeroOpen = false;
+    isInventoryOpen = false;
+    if(isShopOpen) {
+        shop.classList.remove("active-tab");
+        shopPageWindow.style.display = "none";
+        isShopOpen = false;
+    } else {
+        shopPageWindow.style.display = "block";
+        shopPageWindow.classList.remove('floating-ani');
+        shop.classList.add("active-tab");
+        setTimeout(() => {
+            shopPageWindow.classList.add('floating-ani');
+        }, 500);
+
+        shopPageTiles.forEach(tile => {
+            tile.classList.add('appear');
+        });
+        setTimeout(() => {
+            shopPageTiles.forEach(tile => {
+                tile.classList.remove('appear');
+            });
+        }, 400);
+        dialog.innerText = "You Enter Shop";
+        isShopOpen = true;
+    }
 }
 
 function goCave() {
     playTeleportAudio();
-    update(locations[2]);
+    update(locations[1]);
 }
 
 function fightSlime() {
@@ -537,6 +730,7 @@ function openInventory() {
     goTown();
     updateInventory();
     isHeroOpen = false;
+    isShopOpen = false;
     if (isInventoryOpen) {
         inventoryWindow.style.display = "none";
         bag.classList.remove('active-tab');
@@ -553,11 +747,11 @@ function openInventory() {
         dialog.style.display = "none";
     }
 }
-let heroFirst = true;
 function openHero() {
     goTown();
     updateHero();
-    isInventoryOpen = false
+    isInventoryOpen = false;
+    isShopOpen = false;
     if (isHeroOpen) {
         heroWindow.style.display = "none";
         hero.classList.remove('active-tab');
@@ -568,15 +762,44 @@ function openHero() {
         heroWindow.style.display = "flex";
         isHeroOpen = true;
         hero.classList.add('active-tab');
+        dialog.style.display = "none";
         setTimeout(() => {
             heroWindow.classList.add('floating-ani');
         }, 500);
-        if (!heroFirst)
-            dialog.style.display = "none";
     }
-    heroFirst = false
 }
-openHero(); //to open when game starts
+
+function navigate() {
+    const navigations = [
+        {
+            angle: 0,
+            text: ["Cave", "Dragon"],
+            func: goShop,
+            buttonText: "Enter Shop"
+        },
+        {
+            angle: 120,
+            text: ["Town", "Cave"],
+            func: fightDragon,
+            buttonText: "Fight Dragon"
+        },
+        {
+            angle: -120,
+            text: ["Dragon", "Town"],
+            func: goCave,
+            buttonText: "Enter Cave"
+        }
+    ]
+    let currentNav = navigations.find(nav => {
+        return Math.abs(THREE.MathUtils.degToRad(nav.angle) - targetRotation) < 0.001;
+    });
+
+    mainButton.onclick = currentNav.func;
+    mainButton.innerText = currentNav.buttonText;
+    leftButton.innerText = currentNav.text[0];
+    rightButton.innerText = currentNav.text[1];
+}
+
 function updateInventory() {
     const stickText = document.querySelector(".weapon1-quanity");
     const daggerText = document.querySelector(".weapon2-quanity");
@@ -703,15 +926,51 @@ function upgradeWeapons() {
     currentWeapon = bestWeapon();
     saveGame();
 }
+
+function energyLoop(time) {
+    const delta = time - lastTime;
+    lastTime = time;
+
+    energy += delta * REFILL_RATE;
+    energy = Math.min(energy, MAX_ENERGY);
+
+    energyPulseAnimation();
+    updateEnergyUI();
+    requestAnimationFrame(energyLoop);
+}
+requestAnimationFrame(energyLoop);
+function updateEnergyUI() {
+    energyFlow.style.background = `linear-gradient(to right, var(--accent-2) ${energy}%, #555 ${energy}%)`;
+}
+function useEnergy(cost) {
+    if (energy < cost) {
+        console.log("Not enough elixir ❌");
+        return false;
+    }
+    energy -= cost;
+    console.log(`Used ${cost} energy ⚔️`);
+    return true;
+}
+function energyPulseAnimation() {
+    const energySegments = document.querySelectorAll(".energy-segment");
+    let segmentIndex = Math.floor(energy / 20);
+    if(segmentIndex < 0 || segmentIndex >= energySegments.length) return;
+
+    const segment = energySegments[segmentIndex];
+    segment.style.animation = "none";
+    segment.offsetHeight; // force reflow
+    segment.style.animation = "energyPulse 0.4s ease-in-out";
+}
 function goFight() {
     buttonSoundEnabled = true;
-    update(locations[3]);
+    update(locations[2]);
     monsterHealth = monsters[fighting].health;
     monsterStats.style.display = "flex";
-    heroHealth.style.display = "flex";
+    heroBattleStats.style.display = "flex";
     heroImage.style.display = "block";
     monsterName.innerText = monsters[fighting].name;
     monsterLevel.innerText = monsters[fighting].level;
+    energyBox.style.display = "flex";
 
     monsterContainer.style.display = "block";
     initCameraForContainer(monsterCamera, monsterContainer);
@@ -720,6 +979,7 @@ function goFight() {
     monsterProgress(monsterHealth);
     playerProgress(health);
 }
+
 function monsterProgress(hp) {
     const monsterHpText = document.querySelector(".monster-hp");
     const monsterCurrentHealth = document.querySelector(".monster-progress");
@@ -737,27 +997,36 @@ function playerProgress(hp) {
     healthBarColor(playerCurrentHealth, playerPercent);
 }
 function healthBarColor(name, percent) {
-    let color = "#50cc50";
+    let color = "#44cc44";
     if (percent < 60 && percent > 25) {
-        color = "#acac50";
+        color = "#cccc44";
     } else if (percent <= 25) {
-        color = "#cc5050";
+        color = "#cc4444";
     }
     name.style.backgroundColor = color;
 }
-function attack() {
-    dialog.innerText = "The " + monsters[fighting].name + " attacks.";
-    dialog.innerText += " You attack it with your " + weapons[currentWeapon].name + ".";
-    let heroHitAmount = getMonsterAttackValue(monsters[fighting].level);
-    health -= heroHitAmount;
-    heroDamageText.style.display = "block";
-    heroDamageText.innerText = heroHitAmount;
+function attack(skill) {
+    skill = Number(skill);
+    
     if (isMonsterHit()) {
-        let monsterhitAmount = weapons[currentWeapon].power + Math.floor(Math.random() * xp) + level;
-        monsterHealth -= monsterhitAmount;
-        monsterDamageText.style.display = "block";
-        monsterDamageText.innerText = monsterhitAmount;
-        monsterProgress(monsterHealth);
+        if(energy >= heroSkills[skill].energyCost) {
+            dialog.innerText = "The " + monsters[fighting].name + " attacks. ";
+            dialog.innerText += " You used your skill " + heroSkills[skill].name + ". ";
+
+            let monsterhitAmount = weapons[currentWeapon].power + Math.floor(Math.random() * (heroSkills[skill].power / 100 * heros[currentHero].attackPower)) + level;
+            useEnergy(heroSkills[skill].energyCost);
+
+            monsterHealth -= monsterhitAmount;
+            monsterDamageText.style.display = "block";
+            monsterDamageText.innerText = monsterhitAmount;
+
+            let heroHitAmount = getMonsterAttackValue(monsters[fighting].level);
+            health -= heroHitAmount;
+            heroDamageText.style.display = "block";
+            heroDamageText.innerText = heroHitAmount;
+        } else {
+            dialog.innerText += "Insufficent Energy.";
+        }
     } else {
         dialog.innerText += " You miss.";
     }
@@ -782,7 +1051,6 @@ function attack() {
         monsterDamageText.style.display = "none";
     }, 500);
 }
-
 function getMonsterAttackValue(level) {
     const hit = (level * 5) - (Math.floor(Math.random() * xp) + level);
     return hit > 0 ? hit : 0;
@@ -790,10 +1058,6 @@ function getMonsterAttackValue(level) {
 
 function isMonsterHit() {
     return Math.random() > .1 || health < 25;
-}
-
-function dodge() {
-    dialog.innerText = "You dodge the attack from the " + monsters[fighting].name;
 }
 
 function defeatMonster() {
@@ -806,7 +1070,7 @@ function defeatMonster() {
     animateNumber(xpText, prevXp, xp);
     iconsPulse("xpIcon");
     updateLevel();
-    update(locations[4]);
+    update(locations[3]);
     saveGame();
 }
 function updateLevel() {
@@ -825,19 +1089,19 @@ function updateLevel() {
     let xpForNextLevel = levelXp[level] - levelXp[level - 1];
     let currentXpInLevel = xp - levelXp[level - 1];
     let xpPercent = (currentXpInLevel / xpForNextLevel) * 100;
-    xpProgressBar.style.background = `linear-gradient(to right, var(--gold) 0%, var(--gold) ${xpPercent}%, var(--dialog-bg) ${xpPercent}%, var(--dialog-bg) 100%)`;
+    xpProgressBar.style.width = xpPercent + "%";
     levelText.innerText = level;
     heroLevelText.innerText = level;
     saveGame();
 }
 
 function lose() {
-    update(locations[5]);
+    update(locations[4]);
     playLoseAudio();
 }
 
 function winGame() {
-    update(locations[6]);
+    update(locations[5]);
     playWinAudio();
 }
 
@@ -911,7 +1175,7 @@ function luckResult(rarity) {
 /* Lucky Block End*/
 
 /* Animations and Visuals */
-document.querySelectorAll('.top-buttons, .bottom-buttons, .page-item, .shop-page-item')
+document.querySelectorAll('.top-buttons, .page-item, .shop-page-item')
 .forEach(btn => {
     btn.addEventListener('click', () => {
         btn.classList.add('bounce-animation');
@@ -963,7 +1227,7 @@ function animateNumber(textElement, start, end) {
 }
 
 //audio
-document.querySelectorAll('.top-buttons, .bottom-buttons')
+document.querySelectorAll('.top-buttons')
 .forEach(btn => {
     const buttonAudio = document.getElementById('button-sound');
     buttonAudio.currentTime = 0;

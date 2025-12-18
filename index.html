@@ -8,7 +8,7 @@
 </head>
 <body class="position-relative">
 	<header class="padding-5 width100 position-fixed flex flex-align flex-justify shadow-down">
-		<h1>Dragon Game</h1>
+		<h1 class="text">Dragon Game</h1>
 	</header>
 	<div id="loader-overlay">
 		<div class="spinner">
@@ -32,12 +32,16 @@
 						<img src="assests/ic_back.svg" aria-label="back button" class="button-icons" />
 						Back
 					</button>
-					<button class="top-buttons top-button2" onclick="openInventory()">
+					<button class="top-buttons top-button2" onclick="goShop()">
+						<img src="assests/ic_shop.svg" aria-label="back button" class="button-icons" />
+						Shop
+					</button>
+					<button class="top-buttons top-button3" onclick="openInventory()">
 						<img src="assests/ic_inventory.svg" aria-label="back button" class="button-icons" />
 						Inventory
 						<div class="inventory position-absolute"></div>
 					</button>
-					<button class="top-buttons top-button3" onclick="openHero()">
+					<button class="top-buttons top-button4" onclick="openHero()">
 						<img src="assests/ic_hero.svg" aria-label="back button" class="button-icons" />
 						Hero
 					</button>
@@ -53,11 +57,9 @@
 						Good luck!
 					</p>
 				</div>
-				<div class="bottom-bar flex flex-align flex-justify position-fixed">
-					<button class="bottom-buttons bottom-button1">Shop</button>
-					<button class="bottom-buttons bottom-button2">Cave</button>
-					<button class="bottom-buttons bottom-button3">Dragon</button>
-				</div>
+				<button class="button main-button" aria-label="Button 1">Enter Shop</button>
+				<button class="nav-button left-button">Cave</button>
+				<button class="nav-button right-button">Dragon</button>
 				<div class="hero-profile flex-align flex-justify flex-column position-absolute">
 					<p class="info-name">Dragon Repeller</p>
 					<div class="profile-image-cover flex flex-align flex-justify">
@@ -150,20 +152,24 @@
 						</div>
 					</div>
 				</div>
-				<div class="monster-stats flex-align flex-column flex-justify position-absolute">
-					<div class="monster-top flex flex-align">
-						<p class="monster-stat">Monster Name: <span class="monsterName">Slime Group</span></p>
-						<p class="monster-stat">level: <span class="monsterLevel">1</span></p>
+				<div class="monster-battle-stats flex-align flex-column flex-justify position-absolute">
+					<div class="stats-top flex flex-align">
+						<p class="battle-stats">Monster: <span class="monsterName">Slime Group</span></p>
+						<p class="battle-stats">level: <span class="monsterLevel">1</span></p>
 					</div>
-					<div class="monster-health position-relative">
+					<div class="progress-bar-cover">
 						<p class="monster-hp">45 / 45</p>
-						<div class="monster-progress"></div>
+						<div class="monster-progress progress-bar"></div>
 					</div>
 				</div>
-				<div class="hero-health-stat position-absolute flex-align flex-justify">
-					<div class="hero-health">
+				<div class="hero-battle-stats position-absolute flex-align flex-justify flex-column">
+					<div class="stats-top flex flex-align">
+						<p class="battle-stats">Hero: <span class="heroName">Hero</span></p>
+						<p class="battle-stats">level: <span class="heroLevel">1</span></p>
+					</div>
+					<div class="progress-bar-cover">
 						<p class="hero-hp">100 / 100</p>
-						<div class="hero-progress"></div>
+						<div class="hero-progress progress-bar"></div>
 					</div>
 				</div>
 				<div class="hero-stats flex flex-align position-fixed">
@@ -172,7 +178,8 @@
 							Increase <span class="xp-icon-text">Level</span> by getting <span class="xp-icon-text">xp</span> from
 							monsters to improve your damage
 						</p>
-						<div class="icon-text-bg xp-progress-bar">
+						<div class="icon-text-bg">
+							<div class="xp-progress-bar progress-bar"></div>
 							<span class="xpText">0</span>
 						</div>
 						<span class="levelText">1</span>
@@ -190,6 +197,15 @@
 						<div class="icon-text-bg">
 							<span class="healthText">100</span>
 						</div>
+					</div>
+				</div>
+				<div class="energy-box position-absolute flex-align flex-justify">
+					<div class="energy-flow-box flex flex-align">
+						<div class="energy-segment"></div>
+						<div class="energy-segment"></div>
+						<div class="energy-segment"></div>
+						<div class="energy-segment"></div>
+						<div class="energy-segment"></div>
 					</div>
 				</div>
 				<p class="dialog position-fixed">Welcome to Dragon Repeller. You must defeat the dragon that is preventing people from leaving the town. Use the buttons above to go somewhere.</p>
