@@ -120,7 +120,7 @@ function createTorchFire(torchEmpty) {
 //rotation and navigation
 let targetRotation = 0;
 const mainButton = document.querySelector(".main-button");
-mainButton.onclick = goShop;
+mainButton.onclick = goShop; //starting
 const leftButton = document.querySelector(".left-button");
 const rightButton = document.querySelector(".right-button");
 
@@ -572,7 +572,7 @@ const locations = [
     },
     {
         name: "kill monster",
-        text: 'The monster screams "Arg!" as it dies. You gain experience points and find gold.',
+        text: 'The monster screams "Arg!" as it dies.',
         bg: "url('assests/battle.jpg')",
         rotation: -120
     },
@@ -649,8 +649,12 @@ function update(location) {
         rightButton.style.display = "block";
         mainButton.style.display = "block";
     }
+    if(location.name === "lose" || location.name === "win") {
+        gameOverPop(location.name);
+    } else {
+        saveGame();
+    }
     dialog.innerHTML = location.text;
-    saveGame();
 }
 function monstersPage() {
     const pageTiles = document.querySelectorAll('.page-item');
@@ -684,6 +688,7 @@ function goTown() {
     buttonSoundEnabled = false;
     update(locations[0]);
     targetRotation = 0;
+    navigate()
 }
 
 let isShopOpen = false;
@@ -1126,20 +1131,36 @@ function updateLevel() {
     heroLevelText.innerText = level;
     saveGame();
 }
-
+function gameOverPop(result) {
+    const gameOverPopup = document.querySelector(".game-over-cover");
+    const gameOverText = document.querySelector(".game-over");
+    if(result == "win") {
+        gameOverPopup.style.display = "flex";
+        gameOverText.innerHTML = "&#x1F389 You Won &#x1F389";
+    } else {
+        gameOverPopup.style.display = "flex";
+        gameOverText.innerHTML = "You die. &#x2620;";
+    }
+}
 function lose() {
+    restart();
     update(locations[4]);
     playLoseAudio();
 }
 
 function winGame() {
+    restart();
     update(locations[5]);
     playWinAudio();
 }
 
 function restart() {
     localStorage.removeItem(SAVE_KEY);
-    location.reload();
+}
+function reload() {
+    setTimeout(() => {
+        location.reload();
+    }, 300);
 }
 
 /* Lucky Block Start*/
