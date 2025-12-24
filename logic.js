@@ -530,21 +530,24 @@ const heroSkills = [
         name: "Sword Slash",
         energyCost: 20,
         power: 15,
-        skillClass: "skill0"
+        skillClass: "skill0",
+        imgSrc: "assests/skill0.png"
     },
     {
         skillId: 1,
         name: "Energy Slash",
         energyCost: 40,
         power: 50,
-        skillClass: "skill1"
+        skillClass: "skill1",
+        imgSrc: "assests/skill1.png"
     },
     {
         skillId: 2,
         name: "Multi Cut",
         energyCost: 40,
         power: 40,
-        skillClass: "skill2"
+        skillClass: "skill2",
+        imgSrc: "assests/skill2.png"
     }
 ]
 const heros = [
@@ -621,6 +624,20 @@ function skillButtons() {
     skillCosts[0].innerText = heroSkills[heros[currentHero].skills[0]].energyCost / 20;
     skillCosts[1].innerText = heroSkills[heros[currentHero].skills[1]].energyCost / 20;
     skillCosts[2].innerText = heroSkills[heros[currentHero].skills[2]].energyCost / 20;
+
+    const placeHolder = "assests/placeholder.png";
+    const skillImages = document.querySelectorAll(".skill-image");
+    for (let i = 0; i < skillImages.length - 1; i++) {
+        const skillIndex = heros[currentHero].skills[i];
+        const src = heroSkills[skillIndex]?.imgSrc || placeHolder;
+        skillImages[i].src = src;
+        skillImages[i].onerror = () => {
+            skillImages[i].src = placeHolder;
+        };
+    }
+    // skillImages[0].src = heroSkills[heros[currentHero].skills[0]].imgSrc || placeHolder;
+    // skillImages[1].src = heroSkills[heros[currentHero].skills[1]].imgSrc || placeHolder;
+    // skillImages[2].src = heroSkills[heros[currentHero].skills[2]].imgSrc || placeHolder;
 }
 skillButtons();
 let isPageOpen = false;
@@ -1279,7 +1296,7 @@ function luckResult(rarity) {
 /* Lucky Block End*/
 
 /* Animations and Visuals */
-document.querySelectorAll('.bar-buttons, .page-item, .shop-page-item, .skills, .nav-button')
+document.querySelectorAll('.bar-buttons, .page-item, .shop-page-item, .skills')
 .forEach(btn => {
     btn.addEventListener('click', () => {
         btn.classList.add('bounce-animation');
