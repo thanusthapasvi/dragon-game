@@ -436,8 +436,6 @@ let monsterHealth;
 let isHeroOpen = false;
 let isInventoryOpen = false;
 
-let buttonSoundEnabled = true;
-
 const gameHero = document.querySelector(".game");
 const gameLucky = document.querySelector(".lucky-box");
 
@@ -728,8 +726,6 @@ function closeNavButton() {
 }
 
 function goTown() {
-    playTeleportAudio();
-    buttonSoundEnabled = false;
     update(locations[0]);
     targetRotation = 0;
     navigate()
@@ -738,7 +734,6 @@ function goTown() {
 let isShopOpen = false;
 function goShop() {
     goTown();
-    buttonSoundEnabled = false;
 
     const shopPageTiles = document.querySelectorAll('.shop-page-item');
     shopPageTiles[0].onclick = buyHealthRegen;
@@ -799,7 +794,6 @@ function fightDragon() {
 
 function fightTimeOut() {
     //to play animation of bounse for page tiles in cave
-    buttonSoundEnabled = true;
     setTimeout(() => {
         goFight();
     }, 400);
@@ -1049,7 +1043,6 @@ function energyPulseAnimation() {
     segment.style.animation = "energyPulse 0.4s ease-in-out";
 }
 function goFight() {
-    buttonSoundEnabled = true;
     update(locations[2]);
 
     monsterHealth = monsters[fighting].health;
@@ -1367,12 +1360,11 @@ function animateNumber(textElement, start, end) {
 }
 
 //audio
-document.querySelectorAll('.bar-buttons')
+document.querySelectorAll('.bar-buttons, .nav-button, .main-button')
 .forEach(btn => {
     const buttonAudio = document.getElementById('button-sound');
     buttonAudio.currentTime = 0;
     btn.addEventListener('click', () => {
-        if (!buttonSoundEnabled) return; 
         buttonAudio.play();
     });
 });
