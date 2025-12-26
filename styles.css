@@ -1390,7 +1390,7 @@ main {
 	border: 3px solid var(--gold);
 	cursor: pointer;
 	color: white;
-	background: linear-gradient(to bottom right, var(--accent-2-shadow), var(--accent-shadow));
+	background: linear-gradient(to bottom right, var(--accent-2), var(--accent));
 	animation: adBounce 2s ease-in-out infinite;
 }
 .ad-box::after {
@@ -1430,8 +1430,8 @@ main {
 }
 .ad-cover {
 	width: clamp(300px, 80%, 450px);
-	height: clamp(650px, 90%, 850px) !important;
-	background-color: var(--accent);
+	height: clamp(620px, 90%, 800px);
+	background: var(--accent);
 	border-radius: 1rem;
 	padding: 1rem;
 	position: relative;
@@ -1456,15 +1456,23 @@ main {
 	display: none;
 	z-index: 100;
 }
+.closeAd:hover {
+	color: var(--accent-text);
+	background-color: var(--accent-2);
+	box-shadow: 0 0 3px var(--accent-2), 0 0 6px black;
+}
 .closeAd:active {
 	transform: scale(0.8);
 }
 @keyframes adBounce {
 	0%, 100% {
-		transform: translateX(-50%) rotateZ(5deg);
+		transform: translateX(-50%) rotateZ(5deg) scale(1);
+	}
+	25%, 75% {
+		transform: translateX(-50%) rotateZ(0deg) scale(1.1);
 	}
 	50% {
-		transform: translateX(-50%) rotateZ(-5deg);
+		transform: translateX(-50%) rotateZ(-5deg) scale(0.9);
 	}
 }
 
@@ -1499,10 +1507,5 @@ main {
 	}
 	.page-item:hover, .shop-page-item:hover {
 		transform: scale(1.05);
-	}
-	.closeAd:hover {
-		color: var(--accent-text);
-		background-color: var(--accent-2);
-		box-shadow: 0 0 3px var(--accent-2), 0 0 6px black;
 	}
 }
