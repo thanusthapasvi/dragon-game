@@ -1428,11 +1428,16 @@ xMark.addEventListener('click', () => {
     gainGold(5);
     xMark.style.display = "none";
 });
+
+let adLoaded = false;
 function showAd() {
     adPop.style.display = "flex";
-    requestAnimationFrame(() => {
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    });
+    if (!adLoaded) {
+        requestAnimationFrame(() => {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            adLoaded = true;
+        });
+    }
     setTimeout(() => {
         xMark.style.display = "block";
     }, 1000);

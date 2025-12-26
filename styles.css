@@ -1429,7 +1429,7 @@ main {
 	z-index: 100;
 }
 .ad-cover {
-	width: clamp(300px, 80%, 450px);
+	width: clamp(300px, 100%, 450px);
 	height: clamp(620px, 90%, 800px);
 	background: var(--accent);
 	border-radius: 1rem;
