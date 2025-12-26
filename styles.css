@@ -275,7 +275,7 @@ header {
 	left: 0;
 	background-color: var(--header-bg);
 	overflow: visible;
-	z-index: 999;
+	z-index: 99;
 }
 
 /* Loading.... */
@@ -1419,6 +1419,45 @@ main {
 	background-position: 0% 50%;
 	animation: buttonShine 3s linear infinite;
 }
+.ad-pop {
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: var(--dialog-bg);
+	display: none;
+	z-index: 100;
+}
+.ad-cover {
+	width: clamp(300px, 80%, 450px);
+	height: 90%;
+	background-color: var(--accent);
+	border-radius: 1rem;
+	padding: 1rem;
+	position: relative;
+}
+.closeAd {
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
+	width: 2.2rem;
+	height: 2.2rem;
+	font-size: 1.5rem;
+	color: var(--accent-2);
+	background-color: transparent;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 3px solid var(--accent-2);
+	text-align: center;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	display: none;
+}
+.closeAd:active {
+	transform: scale(0.8);
+}
 @keyframes adBounce {
 	0%, 100% {
 		transform: translateX(-50%) rotateZ(5deg);
@@ -1459,5 +1498,10 @@ main {
 	}
 	.page-item:hover, .shop-page-item:hover {
 		transform: scale(1.05);
+	}
+	.closeAd:hover {
+		color: var(--accent-text);
+		background-color: var(--accent-2);
+		box-shadow: 0 0 3px var(--accent-2), 0 0 6px black;
 	}
 }

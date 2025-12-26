@@ -977,6 +977,14 @@ function buyLucky() {
         dialog.innerText = "You dont have enough gold";
     }
 }
+function gainGold(amount) {
+    const prevGold = gold;
+    gold += amount;
+    animateNumber(goldText, prevGold, gold);
+    iconsPulse("coinIcon");
+    playBuySuccessAudio();
+    saveGame();
+}
 function addWeapon(name) {
     const item = inventory.find(i => i.name === name);
     if (item) {
@@ -1407,4 +1415,22 @@ function playSwordAudio() {
     const swordAudio = document.getElementById('sword-sound');
     swordAudio.currentTime = 0;
     swordAudio.play();
+}
+
+// Ad setup
+const adBox = document.querySelector(".ad-box");
+const adPop = document.querySelector(".ad-pop");
+const xMark = document.querySelector(".closeAd");
+
+adBox.addEventListener('click', showAd);
+xMark.addEventListener('click', () => {
+    adPop.style.display = "none";
+    gainGold(10);
+    xMark.style.display = "none";
+});
+function showAd() {
+    adPop.style.display = "flex";
+    setTimeout(() => {
+        xMark.style.display = "block";
+    }, 1000);
 }
