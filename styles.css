@@ -1430,7 +1430,7 @@ main {
 }
 .ad-cover {
 	width: clamp(300px, 80%, 450px);
-	height: 90%;
+	min-height: 90% !important;
 	background-color: var(--accent);
 	border-radius: 1rem;
 	padding: 1rem;
@@ -1454,6 +1454,7 @@ main {
 	cursor: pointer;
 	transition: all 0.2s ease;
 	display: none;
+	z-index: 100;
 }
 .closeAd:active {
 	transform: scale(0.8);
